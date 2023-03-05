@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "737983686278",
+    "project_id": "technoexamportal",
+    "storage_bucket": "technoexamportal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737983686278:android:ee2c88fa12540834929307",
+        "android_client_info": {
+          "package_name": "com.example.examportal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737983686278-2q57nqjl829i5m6u3707uv0g994nhv73.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9SWGzbvv10VWkY9wULMZ3VuhXGTj0pDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "737983686278-2q57nqjl829i5m6u3707uv0g994nhv73.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "737983686278-gc07164jrhjve5armsarjn2a20pjbb7k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.examportal"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737983686278:android:3e0bb479744fdca7929307",
+        "android_client_info": {
+          "package_name": "com.example.tiuexamportal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737983686278-2q57nqjl829i5m6u3707uv0g994nhv73.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9SWGzbvv10VWkY9wULMZ3VuhXGTj0pDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "737983686278-2q57nqjl829i5m6u3707uv0g994nhv73.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "737983686278-gc07164jrhjve5armsarjn2a20pjbb7k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.examportal"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
