@@ -263,6 +263,7 @@ class _CreateQuestionPaperState extends State<CreateQuestionPaper> {
                                 'option4': op4.text,
                                 'correctoption': cop.text,
                                 'marks': marks.text,
+                                'qid': uid
                               }).then((value) {
                                 showSnackBar(
                                     context: context,

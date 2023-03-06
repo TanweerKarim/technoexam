@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/mainscreenforcourse.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/editquestionpaper/editSubjectDetails.dart';
+import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/editquestionpaper/editqnamobile.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/editquestionpaper/editsubjectdetailsmobile.dart';
 import 'package:tiuexamportal/utility/responsive_layout.dart';
 
@@ -170,6 +171,11 @@ class _EditQuestionPaperMobileState extends State<EditQuestionPaperMobile> {
                             option4: storedocs[i]['option4'],
                             correctopt: storedocs[i]['correctoption'],
                             marks: int.parse(storedocs[i]['marks']),
+                            qid: storedocs[i]["qid"],
+                            branch: widget.branch,
+                            courseDtl: widget.coursedtl,
+                            semester: widget.semester,
+                            subject: widget.subject,
                           ),
                         ]
                       ],
@@ -239,6 +245,11 @@ class QuestionCard extends StatefulWidget {
   String option4;
   String correctopt;
   int marks;
+  String qid;
+  String branch;
+  String courseDtl;
+  String semester;
+  String subject;
 
   QuestionCard({
     super.key,
@@ -250,6 +261,11 @@ class QuestionCard extends StatefulWidget {
     required this.option4,
     required this.correctopt,
     required this.marks,
+    required this.qid,
+    required this.branch,
+    required this.courseDtl,
+    required this.semester,
+    required this.subject,
   });
 
   @override
@@ -273,7 +289,43 @@ class _QuestionCardState extends State<QuestionCard> {
                       fontSize: 18, color: Colors.black.withOpacity(0.8)),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResponsiveLayout(
+                          mobileScreenLayout: EditQnA(
+                            branch: widget.branch,
+                            courseDtl: widget.courseDtl,
+                            semester: widget.semester,
+                            subject: widget.subject,
+                            uid: widget.qid,
+                            cop: widget.correctopt,
+                            marks: widget.marks.toString(),
+                            op1: widget.option1,
+                            op2: widget.option2,
+                            op3: widget.option3,
+                            op4: widget.option4,
+                            q1: widget.question,
+                          ),
+                          webScreenLayout: EditQnA(
+                            branch: widget.branch,
+                            courseDtl: widget.courseDtl,
+                            semester: widget.semester,
+                            subject: widget.subject,
+                            uid: widget.qid,
+                            cop: widget.correctopt,
+                            marks: widget.marks.toString(),
+                            op1: widget.option1,
+                            op2: widget.option2,
+                            op3: widget.option3,
+                            op4: widget.option4,
+                            q1: widget.question,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                   icon: Icon(Icons.edit),
                 ),
               ],

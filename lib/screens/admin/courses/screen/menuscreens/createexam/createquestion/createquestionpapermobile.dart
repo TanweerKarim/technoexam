@@ -247,6 +247,7 @@ class _CreateQuestionPaperMobileState extends State<CreateQuestionPaperMobile> {
                                     'option4': op4.text,
                                     'correctoption': cop.text,
                                     'marks': marks.text,
+                                    'qid': uid
                                   }).then((value) {
                                     showSnackBar(
                                         context: context,
