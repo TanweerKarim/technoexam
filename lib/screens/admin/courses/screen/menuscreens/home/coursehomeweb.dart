@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class CourserHomeWeb extends StatefulWidget {
   String coursename;
-  String courseImg;
   String courseDtl;
   var size;
   CourserHomeWeb({
     super.key,
-    required this.courseImg,
     required this.coursename,
     required this.size,
     required this.courseDtl,

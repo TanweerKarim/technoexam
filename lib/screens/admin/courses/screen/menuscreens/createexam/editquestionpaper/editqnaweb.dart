@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/mainscreenforcourse.dart';
 
-class EditQnAMobile extends StatefulWidget {
+class EditQnAWeb extends StatefulWidget {
   String branch;
   String courseDtl;
   String uid;
@@ -19,7 +19,7 @@ class EditQnAMobile extends StatefulWidget {
   String op4;
   String cop;
   String marks;
-  EditQnAMobile({
+  EditQnAWeb({
     super.key,
     required this.branch,
     required this.courseDtl,
@@ -36,10 +36,10 @@ class EditQnAMobile extends StatefulWidget {
   });
 
   @override
-  State<EditQnAMobile> createState() => _EditQnAMobileState();
+  State<EditQnAWeb> createState() => _EditQnAWebState();
 }
 
-class _EditQnAMobileState extends State<EditQnAMobile> {
+class _EditQnAWebState extends State<EditQnAWeb> {
   String q11 = '';
   String op11 = '';
   String op21 = '';
@@ -89,7 +89,7 @@ class _EditQnAMobileState extends State<EditQnAMobile> {
                     height: 20,
                   ),
                   SizedBox(
-                    width: widthsize,
+                    width: widthsize * 0.3,
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -110,7 +110,7 @@ class _EditQnAMobileState extends State<EditQnAMobile> {
                     height: 10,
                   ),
                   SizedBox(
-                    width: widthsize,
+                    width: widthsize * 0.3,
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -129,7 +129,7 @@ class _EditQnAMobileState extends State<EditQnAMobile> {
                     height: 10,
                   ),
                   SizedBox(
-                    width: widthsize,
+                    width: widthsize * 0.3,
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -148,7 +148,7 @@ class _EditQnAMobileState extends State<EditQnAMobile> {
                     height: 10,
                   ),
                   SizedBox(
-                    width: widthsize,
+                    width: widthsize * 0.3,
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -167,7 +167,7 @@ class _EditQnAMobileState extends State<EditQnAMobile> {
                     height: 10,
                   ),
                   SizedBox(
-                    width: widthsize,
+                    width: widthsize * 0.3,
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -186,7 +186,7 @@ class _EditQnAMobileState extends State<EditQnAMobile> {
                     height: 10,
                   ),
                   SizedBox(
-                    width: widthsize,
+                    width: widthsize * 0.3,
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -205,7 +205,7 @@ class _EditQnAMobileState extends State<EditQnAMobile> {
                     height: 10,
                   ),
                   SizedBox(
-                    width: widthsize,
+                    width: widthsize * 0.3,
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
@@ -224,7 +224,7 @@ class _EditQnAMobileState extends State<EditQnAMobile> {
                     height: 25,
                   ),
                   SizedBox(
-                    width: widthsize,
+                    width: widthsize * 0.3,
                     child: SizedBox(
                       height: 50,
                       child: ElevatedButton(

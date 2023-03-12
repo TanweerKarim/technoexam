@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/mainscreenforcourse.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/editquestionpaper/editSubjectDetails.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/editquestionpaper/editqnamobile.dart';
+import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/editquestionpaper/editqnaweb.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/editquestionpaper/editsubjectdetailsmobile.dart';
 import 'package:tiuexamportal/utility/responsive_layout.dart';
 
@@ -294,7 +295,7 @@ class _QuestionCardState extends State<QuestionCard> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ResponsiveLayout(
-                          mobileScreenLayout: EditQnA(
+                          mobileScreenLayout: EditQnAMobile(
                             branch: widget.branch,
                             courseDtl: widget.courseDtl,
                             semester: widget.semester,
@@ -308,7 +309,7 @@ class _QuestionCardState extends State<QuestionCard> {
                             op4: widget.option4,
                             q1: widget.question,
                           ),
-                          webScreenLayout: EditQnA(
+                          webScreenLayout: EditQnAWeb(
                             branch: widget.branch,
                             courseDtl: widget.courseDtl,
                             semester: widget.semester,

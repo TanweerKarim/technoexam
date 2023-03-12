@@ -7,6 +7,7 @@ import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexa
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/conductexammainpagemobile.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/home/coursehomepagemobile.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/home/coursehomeweb.dart';
+import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/students/allstudents.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/subjects/allsubectsmobile.dart';
 import 'package:tiuexamportal/screens/mainscreen.dart';
 import 'package:tiuexamportal/utility/responsive_layout.dart';
@@ -61,13 +62,14 @@ class _MainScreenForCourseState extends State<MainScreenForCourse> {
   void initState() {
     super.initState();
     getData();
-
-    try {
-      currentPage = DrawerSections.values.firstWhere((element) =>
-          element.toString() == 'DrawerSections.${widget.currentPage}');
-    } catch (e) {
-      debugPrint(e.toString());
-      currentPage = DrawerSections.home;
+    switch (widget.currentPage) {
+      case "createSubject":
+        setState(() {
+          currentPage = DrawerSections.createSubject;
+        });
+        break;
+      default:
+        currentPage = DrawerSections.home;
     }
     debugPrint(widget.courseDtl);
     debugPrint("${globals.email}");
@@ -84,13 +86,11 @@ class _MainScreenForCourseState extends State<MainScreenForCourse> {
             )
           : ResponsiveLayout(
               mobileScreenLayout: CourseHomePageMobile(
-                courseImg: courseName['coursebannarimage'][i],
                 coursename: widget.coursename,
                 courseDtl: courseName['coursedetails'][i],
                 size: size,
               ),
               webScreenLayout: CourserHomeWeb(
-                courseImg: courseName['coursebannarimage'][i],
                 coursename: widget.coursename,
                 courseDtl: widget.courseDtl,
                 size: size,
@@ -108,7 +108,8 @@ class _MainScreenForCourseState extends State<MainScreenForCourse> {
     } else if (currentPage == DrawerSections.settings) {
       container = LogoutWeb();
     } else if (currentPage == DrawerSections.addstudent) {
-      container = CsvToList();
+      container =
+          AllStudents(branch: widget.coursename, courseDtl: widget.courseDtl);
     } else if (currentPage == DrawerSections.createSubject) {
       container = AllSubectsMobile(
         branch: widget.coursename,
@@ -162,8 +163,8 @@ class _MainScreenForCourseState extends State<MainScreenForCourse> {
             ),
             menuItem(
               4,
-              "Add Student",
-              Icons.people_alt_outlined,
+              "Students",
+              Icons.people_outline_outlined,
               currentPage == DrawerSections.addstudent ? true : false,
             ),
             Divider(),

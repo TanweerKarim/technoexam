@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:tiuexamportal/notes/notescard.dart';
 import 'package:tiuexamportal/screens/student/dashboard/exam/examscard.dart';
+import 'package:tiuexamportal/screens/student/subjects/subjectcarddashbaord.dart';
 
 class WebDashBoard extends StatefulWidget {
   String branch;
@@ -83,15 +85,13 @@ class _WebDashBoardState extends State<WebDashBoard> {
                             height: 20,
                           ),
                           SizedBox(
+                            width: double.infinity,
                             height: 150.0,
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 60.0),
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: const [
-                                  Text("Coming Soon"),
-                                ],
-                              ),
+                              padding: const EdgeInsets.only(
+                                  left: 60.0, right: 20.0),
+                              child: SubjectCardDashboard(
+                                  courseName: widget.branch, sem: widget.sem),
                             ),
                           ),
                         ],
@@ -103,9 +103,9 @@ class _WebDashBoardState extends State<WebDashBoard> {
                           const SizedBox(
                             width: double.infinity,
                             child: Padding(
-                              padding: EdgeInsets.only(left: 60.0),
+                              padding: EdgeInsets.all(20.0),
                               child: Text(
-                                "Calendar",
+                                "Notes",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   color: Colors.blue,
@@ -115,18 +115,13 @@ class _WebDashBoardState extends State<WebDashBoard> {
                             ),
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           SizedBox(
                             height: 150.0,
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 60.0),
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: const [
-                                  Text("Coming Soon"),
-                                ],
-                              ),
+                              padding: const EdgeInsets.all(10.0),
+                              child: NotesCard(),
                             ),
                           ),
                         ],

@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:tiuexamportal/auth/web/weblogout.dart';
 import 'package:tiuexamportal/globals.dart';
+import 'package:tiuexamportal/notes/notesmainscreen.dart';
+import 'package:tiuexamportal/screens/admin/addstudents/addstudents.dart';
 import 'package:tiuexamportal/screens/admin/courses/coursesmainpageweb.dart';
 import 'package:tiuexamportal/screens/admin/courses/cousersesmainpagemobile.dart';
 import 'package:tiuexamportal/screens/admin/dashboard/mobiledashboardadmin.dart';
@@ -94,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
     } else if (currentPage == DrawerSections.events) {
       // container = EventsPage();
     } else if (currentPage == DrawerSections.notes) {
-      // container = NotesPage();
+      container = NotesMainScreen();
     } else if (currentPage == DrawerSections.settings) {
       container = LogoutWeb();
     } else if (currentPage == DrawerSections.notifications) {
@@ -104,9 +106,9 @@ class _MainScreenState extends State<MainScreen> {
     } else if (currentPage == DrawerSections.send_feedback) {
       // container = SendFeedbackPage();
     } else if (currentPage == DrawerSections.addstudent) {
-      container = Center(
-        child: Text('Add Student'),
-      );
+      container = ResponsiveLayout(
+          mobileScreenLayout: AddStudentMobile(),
+          webScreenLayout: AddStudentMobile());
     } else if (currentPage == DrawerSections.questionbank) {
       container = Center(
         child: Text('Question bank'),
@@ -159,12 +161,14 @@ class _MainScreenState extends State<MainScreen> {
               Icons.dashboard_outlined,
               currentPage == DrawerSections.dashboard ? true : false,
               userData['type']),
-          menuItem(
-              2,
-              "Courses",
-              Icons.people_alt_outlined,
-              currentPage == DrawerSections.courses ? true : false,
-              userData['type']),
+          if (userData['type'] == 'admin') ...[
+            menuItem(
+                2,
+                "Courses",
+                Icons.people_alt_outlined,
+                currentPage == DrawerSections.courses ? true : false,
+                userData['type']),
+          ],
           userData['type'] == "admin"
               ? menuItem(
                   3,
@@ -190,31 +194,11 @@ class _MainScreenState extends State<MainScreen> {
               Icons.notes,
               currentPage == DrawerSections.notes ? true : false,
               userData['type']),
-          Divider(),
           menuItem(
               6,
               "Settings",
               Icons.settings_outlined,
               currentPage == DrawerSections.settings ? true : false,
-              userData['type']),
-          menuItem(
-              7,
-              "Notifications",
-              Icons.notifications_outlined,
-              currentPage == DrawerSections.notifications ? true : false,
-              userData['type']),
-          Divider(),
-          menuItem(
-              8,
-              "Privacy policy",
-              Icons.privacy_tip_outlined,
-              currentPage == DrawerSections.privacy_policy ? true : false,
-              userData['type']),
-          menuItem(
-              9,
-              "Send feedback",
-              Icons.feedback_outlined,
-              currentPage == DrawerSections.send_feedback ? true : false,
               userData['type']),
         ],
       ),

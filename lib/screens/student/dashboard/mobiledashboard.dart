@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:tiuexamportal/notes/notescard.dart';
 import 'package:tiuexamportal/screens/student/dashboard/exam/examscard.dart';
+import 'package:tiuexamportal/screens/student/subjects/subjectcarddashbaord.dart';
 
 class MobileDashboard extends StatefulWidget {
   var userdata;
@@ -56,7 +58,7 @@ class _MobileDashboardState extends State<MobileDashboard> {
               height: 20,
             ),
             SizedBox(
-              height: 300,
+              height: 250,
               width: double.infinity,
               child: Row(
                 children: [
@@ -82,12 +84,14 @@ class _MobileDashboardState extends State<MobileDashboard> {
                         ),
                         SizedBox(
                           height: 150.0,
+                          width: double.infinity,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 15.0),
                             child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: const [
-                                Text("Coming Soon"),
+                              children: [
+                                SubjectCardDashboard(
+                                    courseName: widget.userdata['branch'],
+                                    sem: widget.userdata['semester']),
                               ],
                             ),
                           ),
@@ -99,7 +103,7 @@ class _MobileDashboardState extends State<MobileDashboard> {
               ),
             ),
             SizedBox(
-              height: 300,
+              height: 250,
               child: Column(
                 children: [
                   const SizedBox(
@@ -107,7 +111,7 @@ class _MobileDashboardState extends State<MobileDashboard> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 15.0),
                       child: Text(
-                        "Calendar",
+                        "Notes",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Colors.blue,
@@ -120,15 +124,10 @@ class _MobileDashboardState extends State<MobileDashboard> {
                     height: 20,
                   ),
                   SizedBox(
-                    height: 150.0,
+                    height: 200.0,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15.0),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: const [
-                          Text("Coming Soon"),
-                        ],
-                      ),
+                      child: NotesCard(),
                     ),
                   ),
                 ],

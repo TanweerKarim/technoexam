@@ -4,12 +4,10 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class CourseHomePageMobile extends StatefulWidget {
   String coursename;
-  String courseImg;
   String courseDtl;
   var size;
   CourseHomePageMobile({
     super.key,
-    required this.courseImg,
     required this.coursename,
     required this.courseDtl,
     required this.size,
