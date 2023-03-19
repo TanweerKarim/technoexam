@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:tiuexamportal/auth/web/weblogout.dart';
+import 'package:tiuexamportal/events/eventsmainscreen.dart';
 import 'package:tiuexamportal/globals.dart';
 import 'package:tiuexamportal/notes/notesmainscreen.dart';
 import 'package:tiuexamportal/screens/admin/addstudents/addstudents.dart';
@@ -69,8 +70,10 @@ class _MainScreenState extends State<MainScreen> {
       if (!isLoading) {
         if (userData['type'] == 'admin') {
           container = ResponsiveLayout(
-            mobileScreenLayout: MobileDashboardAdmin(),
-            webScreenLayout: WebDashboardAdmin(),
+            mobileScreenLayout: MobileDashboardAdmin(
+              userType: 'admin',
+            ),
+            webScreenLayout: WebDashboardAdmin(userType: 'admin'),
           );
         } else {
           container = ResponsiveLayout(
@@ -94,7 +97,9 @@ class _MainScreenState extends State<MainScreen> {
         );
       }
     } else if (currentPage == DrawerSections.events) {
-      // container = EventsPage();
+      container = EventsMainScreen(
+        userType: userData['type'],
+      );
     } else if (currentPage == DrawerSections.notes) {
       container = NotesMainScreen();
     } else if (currentPage == DrawerSections.settings) {
