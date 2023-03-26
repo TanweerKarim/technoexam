@@ -217,6 +217,7 @@ class _QuestionAnsWebState extends State<QuestionAnsWeb>
     for (int i = 0; i < questionattempt.length; i++) {
       questionattempt[i] = false;
     }
+    qnaindex.clear();
     htmluse.document.exitFullscreen();
     FirebaseFirestore.instance
         .collection('users')

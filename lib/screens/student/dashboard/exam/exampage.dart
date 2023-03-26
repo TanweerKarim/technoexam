@@ -209,6 +209,9 @@ class _ExamPageState extends State<ExamPage> {
                                   .set({
                                 'hasStarted': true,
                                 'isSubmitted': false,
+                                'marksobtained': 0,
+                                'subject': widget.subject,
+                                'totalmarks': 0,
                               }).then((value) => Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(

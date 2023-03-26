@@ -63,7 +63,7 @@ class _EditSubjectDetailsMobileState extends State<EditSubjectDetailsMobile> {
     var widthsize = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Create Subject"),
+        title: const Text("Edit Subject"),
         backgroundColor: Colors.blue,
       ),
       body: Container(

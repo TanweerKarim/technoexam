@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/editquestionpaper/editquestionpapermobile.dart';
+import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/students/editstubjectdetailsweb.dart';
+import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/students/editstudentsdetails.dart';
+import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/students/subjectswithmarks/studentssubjectmarks.dart';
 import 'package:tiuexamportal/utility/responsive_layout.dart';
 
 class StudentDetails extends StatefulWidget {
@@ -46,7 +49,7 @@ class _StudentDetailsState extends State<StudentDetails> {
             columns: const [
               DataColumn(
                   label: Expanded(
-                child: Text('Subject Name',
+                child: Text('Name',
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               )),
@@ -75,6 +78,25 @@ class _StudentDetailsState extends State<StudentDetails> {
                               children: [
                                 Expanded(
                                   child: IconButton(
+                                    onPressed: () async {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              StudentsSubjectMarks(
+                                                  name: storedocs[i]['name'],
+                                                  uid: storedocs[i]['uid']),
+                                        ),
+                                      );
+                                    },
+                                    icon: Icon(
+                                      Icons.open_in_browser_outlined,
+                                    ),
+                                    tooltip: "View",
+                                  ),
+                                ),
+                                Expanded(
+                                  child: IconButton(
                                     onPressed: () {
                                       Navigator.push(
                                           context,
@@ -82,38 +104,20 @@ class _StudentDetailsState extends State<StudentDetails> {
                                             builder: (context) =>
                                                 ResponsiveLayout(
                                               mobileScreenLayout:
-                                                  EditQuestionPaperMobile(
-                                                branch: widget.branch,
-                                                semester: widget.sem,
-                                                subject: storedocs[i]
-                                                    ['subjectName'],
-                                                active: storedocs[i]['active'],
-                                                endTime: storedocs[i]
-                                                    ['endTime'],
-                                                examDate: storedocs[i]
-                                                    ['examDate'],
-                                                startTime: storedocs[i]
-                                                    ['startTime'],
-                                                totalTime: storedocs[i]
-                                                    ['totaltime'],
-                                                coursedtl: widget.courseDtl,
+                                                  EditStudentsDetailsMobile(
+                                                uid: storedocs[i]['uid'],
+                                                email: storedocs[i]['email'],
+                                                isActive: storedocs[i]
+                                                    ['active'],
+                                                name: storedocs[i]['name'],
                                               ),
                                               webScreenLayout:
-                                                  EditQuestionPaperMobile(
-                                                branch: widget.branch,
-                                                semester: widget.sem,
-                                                subject: storedocs[i]
-                                                    ['subjectName'],
-                                                active: storedocs[i]['active'],
-                                                endTime: storedocs[i]
-                                                    ['endTime'],
-                                                examDate: storedocs[i]
-                                                    ['examDate'],
-                                                startTime: storedocs[i]
-                                                    ['startTime'],
-                                                totalTime: storedocs[i]
-                                                    ['totaltime'],
-                                                coursedtl: widget.courseDtl,
+                                                  EditStudentsDetailsWeb(
+                                                uid: storedocs[i]['uid'],
+                                                email: storedocs[i]['email'],
+                                                isActive: storedocs[i]
+                                                    ['active'],
+                                                name: storedocs[i]['name'],
                                               ),
                                             ),
                                           ));
@@ -134,7 +138,7 @@ class _StudentDetailsState extends State<StudentDetails> {
                                             AlertDialog(
                                           title: const Text('Delete?'),
                                           content: Text(
-                                              'Do you really want to delete this subject?'),
+                                              'Do you really want to delete this student?'),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {

@@ -46,6 +46,7 @@ class _EnterDataLoadingSreenState extends State<EnterDataLoadingSreen> {
             "semester": widget.employeeData[i][4],
             "type": widget.employeeData[i][5],
             "uid": value.user!.uid,
+            "active": true,
           }).then((value) {
             setState(() {
               added[i] = true;
@@ -55,6 +56,14 @@ class _EnterDataLoadingSreenState extends State<EnterDataLoadingSreen> {
       }
       checkUpdated = true;
     } catch (e) {
+      _auth
+          .signInWithEmailAndPassword(
+              email: globals.email, password: globals.password)
+          .then(
+        (value) {
+          Navigator.pop(context);
+        },
+      );
       showSnackBar(context: context, content: e.toString());
     }
     if (checkUpdated) {

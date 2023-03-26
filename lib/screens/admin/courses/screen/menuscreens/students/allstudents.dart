@@ -79,11 +79,14 @@ class _AllStudentsState extends State<AllStudents> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
+              height: 600,
               width: double.infinity,
-              child: StudentDetails(
-                branch: widget.branch,
-                sem: dropdownvalue,
-                courseDtl: widget.courseDtl,
+              child: SingleChildScrollView(
+                child: StudentDetails(
+                  branch: widget.branch,
+                  sem: dropdownvalue,
+                  courseDtl: widget.courseDtl,
+                ),
               ),
             ),
           ),

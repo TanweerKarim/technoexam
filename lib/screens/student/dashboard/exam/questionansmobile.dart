@@ -75,6 +75,9 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
+    setState(() {
+      questionattempt.clear();
+    });
     getData();
     int ttltime = int.parse(widget.totaltime);
     controller = AnimationController(
@@ -194,6 +197,7 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
     for (int i = 0; i < questionattempt.length; i++) {
       questionattempt[i] = false;
     }
+    qnaindex.clear();
     FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -446,6 +450,7 @@ class QuestionCard extends StatefulWidget {
 
 class _QuestionCardState extends State<QuestionCard> {
   String selected = '';
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -615,6 +620,12 @@ class Questio extends StatefulWidget {
 }
 
 class _QuestioState extends State<Questio> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(

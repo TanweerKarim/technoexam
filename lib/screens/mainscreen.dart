@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:tiuexamportal/auth/mobile/mobilelogin.dart';
+import 'package:tiuexamportal/auth/web/weblogin.dart';
 import 'package:tiuexamportal/auth/web/weblogout.dart';
 import 'package:tiuexamportal/events/eventsmainscreen.dart';
 import 'package:tiuexamportal/globals.dart';
@@ -49,6 +51,23 @@ class _MainScreenState extends State<MainScreen> {
       globals.password = userData["password"];
       debugPrint(globals.email + " " + globals.password);
       setState(() {});
+      if (!userData['active']) {
+        await FirebaseAuth.instance.signOut().then((value) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ResponsiveLayout(
+                mobileScreenLayout: LoginMobileView(),
+                webScreenLayout: LoginWebView(),
+              ),
+            ),
+            (route) => false,
+          );
+          showSnackBar(
+              context: context,
+              content: "Your account is disabled please contact Exam Cell");
+        });
+      }
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
@@ -174,19 +193,14 @@ class _MainScreenState extends State<MainScreen> {
                 currentPage == DrawerSections.courses ? true : false,
                 userData['type']),
           ],
-          userData['type'] == "admin"
-              ? menuItem(
-                  3,
-                  "Add Student",
-                  Icons.people_alt_outlined,
-                  currentPage == DrawerSections.addstudent ? true : false,
-                  userData['type'])
-              : menuItem(
-                  3,
-                  "Question Bank",
-                  Icons.people_alt_outlined,
-                  currentPage == DrawerSections.questionbank ? true : false,
-                  userData['type']),
+          if (userData['type'] == "admin") ...[
+            menuItem(
+                3,
+                "Add Student",
+                Icons.people_alt_outlined,
+                currentPage == DrawerSections.addstudent ? true : false,
+                userData['type'])
+          ],
           menuItem(
               4,
               "Events",
