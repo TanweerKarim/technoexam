@@ -7,6 +7,7 @@ import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexa
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/createexam/conductexammainpagemobile.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/home/coursehomepagemobile.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/home/coursehomeweb.dart';
+import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/results/allstudentsresult.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/students/allstudents.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/subjects/allsubectsmobile.dart';
 import 'package:tiuexamportal/screens/mainscreen.dart';
@@ -106,7 +107,7 @@ class _MainScreenForCourseState extends State<MainScreenForCourse> {
             courseDtl: widget.courseDtl,
           ));
     } else if (currentPage == DrawerSections.settings) {
-      container = LogoutWeb();
+      container = AllStudentsResult(branch: widget.coursename);
     } else if (currentPage == DrawerSections.addstudent) {
       container =
           AllStudents(branch: widget.coursename, courseDtl: widget.courseDtl);
@@ -170,8 +171,8 @@ class _MainScreenForCourseState extends State<MainScreenForCourse> {
             Divider(),
             menuItem(
               5,
-              "Settings",
-              Icons.settings_outlined,
+              "Results",
+              Icons.assessment_outlined,
               currentPage == DrawerSections.settings ? true : false,
             ),
             InkWell(

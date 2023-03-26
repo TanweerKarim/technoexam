@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/students/subjectswithmarks/editsubjectmarksmobile.dart';
+import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/students/subjectswithmarks/editsubjectmarksweb.dart';
+import 'package:tiuexamportal/utility/responsive_layout.dart';
 
 class SubjectMarks extends StatefulWidget {
   String uid;
@@ -77,16 +77,48 @@ class _SubjectMarksState extends State<SubjectMarks> {
                             children: [
                               Expanded(
                                 child: IconButton(
-                                  onPressed: () async {},
-                                  icon: Icon(
-                                    Icons.open_in_browser_outlined,
-                                  ),
-                                  tooltip: "View",
-                                ),
-                              ),
-                              Expanded(
-                                child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ResponsiveLayout(
+                                                mobileScreenLayout:
+                                                    EditSubjectMarksMobile(
+                                                        hasStarted: storedocs[i]
+                                                            ['hasStarted'],
+                                                        isSubmitted:
+                                                            storedocs[
+                                                                    i][
+                                                                'isSubmitted'],
+                                                        marksobtained: storedocs[
+                                                                    i][
+                                                                'marksobtained']
+                                                            .toString(),
+                                                        subject: storedocs[i]
+                                                            ['subject'],
+                                                        uid: widget.uid,
+                                                        semester:
+                                                            widget.semester),
+                                                webScreenLayout:
+                                                    EditSubjectMarksWeb(
+                                                        hasStarted: storedocs[i]
+                                                            ['hasStarted'],
+                                                        isSubmitted:
+                                                            storedocs[i]
+                                                                ['isSubmitted'],
+                                                        marksobtained: storedocs[
+                                                                    i][
+                                                                'marksobtained']
+                                                            .toString(),
+                                                        subject: storedocs[i]
+                                                            ['subject'],
+                                                        uid: widget.uid,
+                                                        semester:
+                                                            widget.semester),
+                                              )),
+                                    );
+                                  },
                                   icon: Icon(
                                     Icons.edit,
                                   ),
@@ -103,7 +135,7 @@ class _SubjectMarksState extends State<SubjectMarks> {
                                           AlertDialog(
                                         title: const Text('Delete?'),
                                         content: Text(
-                                            'Do you really want to delete this student?'),
+                                            'Do you really want to delete this subject marks?'),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () {
@@ -115,7 +147,9 @@ class _SubjectMarksState extends State<SubjectMarks> {
                                             onPressed: () async {
                                               await FirebaseFirestore.instance
                                                   .collection('users')
-                                                  .doc(storedocs[i]['uid'])
+                                                  .doc(widget.uid)
+                                                  .collection(widget.semester)
+                                                  .doc(storedocs[i]['subject'])
                                                   .delete()
                                                   .then((value) =>
                                                       Navigator.pop(context));
