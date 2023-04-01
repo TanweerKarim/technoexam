@@ -98,7 +98,7 @@ class _ExamsCardState extends State<ExamsCard> {
                                 Text(DateFormat("dd-MM-yyyy").format(
                                     DateTime.parse(storedocs[i]['examDate'] +
                                         " " +
-                                        storedocs[i]['startTime']))),
+                                        storedocs[i]['startTime']))), 
                               ],
                             ),
                             Row(

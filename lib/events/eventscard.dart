@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
+import 'package:tiuexamportal/events/editevents.dart';
 
 class EventsCard extends StatefulWidget {
   String userType;
@@ -30,65 +32,71 @@ class _EventsCardState extends State<EventsCard> {
             }).toList();
             return ListView(children: [
               for (int i = 0; i < storedocs.length; i++) ...[
-                Card(
-                  child: ListTile(
-                    title: Center(
-                      child: Text(
-                        "${storedocs[i]['title']}",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.blue,
+                if (widget.userType == 'admin') ...[
+                  Card(
+                    child: ListTile(
+                      title: Center(
+                        child: Text(
+                          "${storedocs[i]['title']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.blue,
+                          ),
                         ),
                       ),
-                    ),
-                    subtitle: Column(
-                      children: [
-                        Text(
-                          "About Event - ${storedocs[i]['note']}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          "Event Date - ${storedocs[i]['dateofevent']}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          "Start time - ${storedocs[i]['starttime']}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          "End time - ${storedocs[i]['endtime']}",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                    trailing: SizedBox(
-                      width: 100,
-                      child: Row(
+                      subtitle: Column(
                         children: [
-                          if (widget.userType == 'admin') ...[
+                          Text(
+                            "About Event - ${storedocs[i]['note']}",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            'Event Date - ${DateFormat("dd-MM-yyyy").format(DateTime.parse(storedocs[i]["dateofevent"] + " " + storedocs[i]["starttime"]))}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "Start time - ${DateFormat("hh:mma").format(DateTime.parse(storedocs[i]["dateofevent"] + " " + storedocs[i]["starttime"]))}",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "End time - ${DateFormat("hh:mma").format(DateTime.parse(storedocs[i]["dateofevent"] + " " + storedocs[i]["endtime"]))}",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      trailing: SizedBox(
+                        width: 100,
+                        child: Row(
+                          children: [
                             Expanded(
                               child: IconButton(
                                 onPressed: () async {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => EditNotesMobile(
-                                  //               note: storedocs[i]['note'],
-                                  //               title: storedocs[i]['title'],
-                                  //               uid: storedocs[i]['uid'],
-                                  //             )));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditEvents(
+                                                note: storedocs[i]['note'],
+                                                title: storedocs[i]['title'],
+                                                uid: storedocs[i]['uid'],
+                                                endtime: storedocs[i]
+                                                    ['endtime'],
+                                                eventdate: storedocs[i]
+                                                    ['dateofevent'],
+                                                starttime: storedocs[i]
+                                                    ['starttime'],
+                                              )));
                                 },
                                 icon: Icon(
                                   Icons.edit,
@@ -132,12 +140,58 @@ class _EventsCardState extends State<EventsCard> {
                                 ),
                               ),
                             ),
-                          ]
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ] else ...[
+                  Card(
+                    child: ListTile(
+                      title: Center(
+                        child: Text(
+                          "${storedocs[i]['title']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      subtitle: Column(
+                        children: [
+                          Text(
+                            "About Event - ${storedocs[i]['note']}",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            'Event Date - ${DateFormat("dd-MM-yyyy").format(DateTime.parse(storedocs[i]["dateofevent"] + " " + storedocs[i]["starttime"]))}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "Start time - ${DateFormat("hh:mma").format(DateTime.parse(storedocs[i]["dateofevent"] + " " + storedocs[i]["starttime"]))}",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "End time - ${DateFormat("hh:mma").format(DateTime.parse(storedocs[i]["dateofevent"] + " " + storedocs[i]["endtime"]))}",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                )
+                  )
+                ]
               ]
             ]);
           } else {

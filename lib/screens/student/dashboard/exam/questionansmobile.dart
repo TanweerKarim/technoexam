@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tiuexamportal/screens/mainscreen.dart';
+import 'package:tiuexamportal/utility/utility.dart';
 
 class QuestionAnsMobile extends StatefulWidget {
   String semester;
@@ -32,6 +33,8 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
   late final DateTime startTime;
   late final DateTime endTime;
   late AnimationController controller;
+  PageController _pageController = PageController(initialPage: 0);
+
   String get countText {
     Duration count = controller.duration! * controller.value;
     return controller.isDismissed
@@ -267,6 +270,7 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
                           if (!isLoading) ...[
                             Questio(
                               count: i,
+                              control: _pageController,
                             )
                           ] else ...[
                             Container()
@@ -316,6 +320,7 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
                       marksofques.add(int.parse(storedocs[i]['marks']));
                     }
                     return ListView(
+                      controller: _pageController,
                       children: [
                         for (var i = 0; i < storedocs.length; i++) ...[
                           QuestionCard(
@@ -613,7 +618,8 @@ class _QuestionCardState extends State<QuestionCard> {
 
 class Questio extends StatefulWidget {
   int count;
-  Questio({super.key, required this.count});
+  PageController control;
+  Questio({super.key, required this.count, required this.control});
 
   @override
   State<Questio> createState() => _QuestioState();
@@ -630,16 +636,24 @@ class _QuestioState extends State<Questio> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(1.0),
-      child: Container(
-        height: 30,
-        width: 30,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5.0),
-            ),
-            color: questionattempt[widget.count] ? Colors.green : Colors.grey),
-        child: Center(
-          child: Text((widget.count + 1).toString()),
+      child: InkWell(
+        onTap: () {
+          
+          Navigator.pop(context);
+          widget.control.jumpTo(widget.count.toDouble() * 150);          // close the drawer
+        },
+        child: Container(
+          height: 30,
+          width: 30,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5.0),
+              ),
+              color:
+                  questionattempt[widget.count] ? Colors.green : Colors.grey),
+          child: Center(
+            child: Text((widget.count + 1).toString()),
+          ),
         ),
       ),
     );

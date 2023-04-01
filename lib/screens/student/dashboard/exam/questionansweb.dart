@@ -34,6 +34,7 @@ class _QuestionAnsWebState extends State<QuestionAnsWeb>
   late final DateTime startTime;
   late final DateTime endTime;
   late AnimationController controller;
+  PageController _pageController = PageController(initialPage: 0);
   String get countText {
     Duration count = controller.duration! * controller.value;
     return controller.isDismissed
@@ -288,6 +289,7 @@ class _QuestionAnsWebState extends State<QuestionAnsWeb>
                           if (!isLoading) ...[
                             Questio(
                               count: i,
+                              control: _pageController,
                             )
                           ] else ...[
                             Container()
@@ -337,6 +339,7 @@ class _QuestionAnsWebState extends State<QuestionAnsWeb>
                       marksofques.add(int.parse(storedocs[i]['marks']));
                     }
                     return ListView(
+                      controller: _pageController,
                       children: [
                         for (var i = 0; i < storedocs.length; i++) ...[
                           QuestionCard(
@@ -474,6 +477,7 @@ class _QuestionCardState extends State<QuestionCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 300,
       child: Column(
         children: [
           Container(
@@ -633,7 +637,8 @@ class _QuestionCardState extends State<QuestionCard> {
 
 class Questio extends StatefulWidget {
   int count;
-  Questio({super.key, required this.count});
+  PageController control;
+  Questio({super.key, required this.count, required this.control});
 
   @override
   State<Questio> createState() => _QuestioState();
@@ -644,16 +649,23 @@ class _QuestioState extends State<Questio> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(1.0),
-      child: Container(
-        height: 30,
-        width: 30,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(5.0),
-            ),
-            color: questionattempt[widget.count] ? Colors.green : Colors.grey),
-        child: Center(
-          child: Text((widget.count + 1).toString()),
+      child: InkWell(
+        onTap: () {
+          Navigator.pop(context);
+          widget.control.jumpTo(widget.count.toDouble() * 150);
+        },
+        child: Container(
+          height: 30,
+          width: 30,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5.0),
+              ),
+              color:
+                  questionattempt[widget.count] ? Colors.green : Colors.grey),
+          child: Center(
+            child: Text((widget.count + 1).toString()),
+          ),
         ),
       ),
     );
