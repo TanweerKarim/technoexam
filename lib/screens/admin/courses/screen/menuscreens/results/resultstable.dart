@@ -116,54 +116,67 @@ class _ResultsTableState extends State<ResultsTable> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getAllDataOfStudents();
+    if (widget.semester != "") {
+      debugPrint("working");
+      setState(() {});
+    }
+    setState(() {
+      getAllDataOfStudents();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : SingleChildScrollView(
-            child: SizedBox(
-                child: DataTable(
-              columns: [
-                DataColumn(
-                    label: Expanded(
-                  child: Text('Subject\nName',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                )),
-                for (int i = 0; i < subjectData.length; i++) ...[
-                  DataColumn(
-                      label: Text(subjectData[i]['subjectName'],
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold))),
-                ]
-              ],
-              rows: [
-                if (actualStudentsData.length == 0) ...[
-                  DataRow(cells: [
-                    DataCell(Text(' - ')),
-                    for (int i = 0; i < subjectData.length; i++) ...[
-                      DataCell(Text('-')),
-                    ]
-                  ]),
-                ] else ...[
-                  for (var i = 0; i < actualStudentsData.length; i++) ...[
-                    DataRow(
-                      cells: [
-                        DataCell(Text(actualStudentsData[i]['name'])),
-                        for (int j = 0; j < subjectData.length; j++) ...[
-                          DataCell(Text(marks[i][j].toString())),
-                        ]
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Results"),
+      ),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: SizedBox(
+                  width: double.infinity,
+                  child: DataTable(
+                    columns: [
+                      DataColumn(
+                          label: Expanded(
+                        child: Text('Subject\nName',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                      )),
+                      for (int i = 0; i < subjectData.length; i++) ...[
+                        DataColumn(
+                            label: Text(subjectData[i]['subjectName'],
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold))),
+                      ]
+                    ],
+                    rows: [
+                      if (actualStudentsData.length == 0) ...[
+                        DataRow(cells: [
+                          DataCell(Text(' - ')),
+                          for (int i = 0; i < subjectData.length; i++) ...[
+                            DataCell(Text('-')),
+                          ]
+                        ]),
+                      ] else ...[
+                        for (var i = 0; i < actualStudentsData.length; i++) ...[
+                          DataRow(
+                            cells: [
+                              DataCell(Text(actualStudentsData[i]['name'])),
+                              for (int j = 0; j < subjectData.length; j++) ...[
+                                DataCell(Text(marks[i][j].toString())),
+                              ]
+                            ],
+                          ),
+                        ],
                       ],
-                    ),
-                  ],
-                ],
-              ],
-            )),
-          );
+                    ],
+                  )),
+            ),
+    );
   }
 }

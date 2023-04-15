@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tiuexamportal/screens/admin/courses/screen/menuscreens/results/resultstable.dart';
 
@@ -13,9 +14,6 @@ class AllStudentsResult extends StatefulWidget {
 }
 
 class _AllStudentsResultState extends State<AllStudentsResult> {
-  String dropdownvalue = 'semester 1';
-
-  // List of items in our dropdown menu
   var items = [
     'semester 1',
     'semester 2',
@@ -28,59 +26,52 @@ class _AllStudentsResultState extends State<AllStudentsResult> {
   ];
   @override
   Widget build(BuildContext context) {
+    var widthsize = MediaQuery.of(context).size.width;
+    debugPrint(items.length.toString());
     return Container(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 250,
-                  child: Text(
-                    "Results",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-                Spacer(),
-                DropdownButton(
-                  // Initial Value
-                  value: dropdownvalue,
-
-                  // Down Arrow Icon
-                  icon: const Icon(Icons.keyboard_arrow_down),
-
-                  // Array list of items
-                  items: items.map((String items) {
-                    return DropdownMenuItem(
-                      value: items,
-                      child: Text(items),
-                    );
-                  }).toList(),
-                  // After selecting the desired option,it will
-                  // change button value to selected value
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropdownvalue = newValue!;
-                    });
-                  },
-                ),
-              ],
-            ),
+          SizedBox(
+            height: 70,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 600,
-              width: double.infinity,
-              child: SingleChildScrollView(
-                child: ResultsTable(
-                  branch: widget.branch,
-                  semester: dropdownvalue,
-                ),
+          Center(
+            child: Text(
+              "Select semester to create question paper",
+              style: TextStyle(
+                fontSize: 20,
               ),
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          for (int i = 0; i < items.length; i++) ...[
+            Padding(
+              padding: const EdgeInsets.only(left: 18.0, right: 18.0),
+              child: Center(
+                child: SizedBox(
+                  height: 50,
+                  width: widthsize,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ResultsTable(
+                              branch: widget.branch,
+                              semester: items[i],
+                            ),
+                          ));
+                    },
+                    child: Text(items[i]),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
         ],
       ),
     );
