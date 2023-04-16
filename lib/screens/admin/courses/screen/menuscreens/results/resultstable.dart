@@ -1,5 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:tiuexamportal/utility/responsive_layout.dart';
+import 'package:universal_html/html.dart' as html;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tiuexamportal/utility/utility.dart';
 
 class ResultsTable extends StatefulWidget {
@@ -47,6 +53,8 @@ class _ResultsTableState extends State<ResultsTable> {
   List<dynamic> marksData1 = [];
   List<List<dynamic>> marks = [];
   bool isLoading = false;
+  List<List<dynamic>> alldata = [];
+
   getAllDataOfStudents() async {
     setState(() {
       isLoading = true;
@@ -104,12 +112,49 @@ class _ResultsTableState extends State<ResultsTable> {
         }
       }
       // debugPrint(marksData[i].toString());
+    } //generate(3, (_) => [])
+    final fixedLengthList = List<List<dynamic>>.generate(
+        actualStudentsData.length, (_) => [],
+        growable: false);
+
+    if (actualStudentsData.length != 0) {
+      for (var i = 0; i < actualStudentsData.length; i++) {
+        fixedLengthList[i].add(actualStudentsData[i]['name']);
+        for (int j = 0; j < subjectData.length; j++) {
+          fixedLengthList[i].add(marks[i][j]);
+        }
+      }
     }
+    alldata = fixedLengthList;
+    debugPrint(alldata.toString());
     setState(() {});
-    debugPrint(marks.toString());
     setState(() {
       isLoading = false;
     });
+  }
+
+  exportCsv(String type) async {
+    String csv = const ListToCsvConverter().convert(alldata);
+    final bytes = utf8.encode(csv);
+    debugPrint(type);
+    if (type == "Web") {
+      final blob = html.Blob([bytes]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      final anchor = html.document.createElement('a') as html.AnchorElement
+        ..href = url
+        ..style.display = 'none'
+        ..download =
+            'resultsof${widget.semester.replaceFirst(RegExp(r' '), '_')}.csv';
+      html.document.body!.children.add(anchor);
+      anchor.click();
+      html.Url.revokeObjectUrl(url);
+    } else {
+      String dir = (await getExternalStorageDirectory())!.path;
+      String filePath = "$dir/list.csv";
+      File file = File(filePath);
+      await file.writeAsString(csv);
+      print("File exported successfully!");
+    }
   }
 
   @override
@@ -130,6 +175,23 @@ class _ResultsTableState extends State<ResultsTable> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Results"),
+        actions: [
+          if (MediaQuery.of(context).size.width > 600) ...[
+            IconButton(
+              onPressed: () {
+                exportCsv("Web");
+              },
+              icon: Icon(Icons.download),
+            ),
+          ] else ...[
+            IconButton(
+              onPressed: () {
+                exportCsv("Android");
+              },
+              icon: Icon(Icons.download),
+            ),
+          ]
+        ],
       ),
       body: isLoading
           ? Center(
