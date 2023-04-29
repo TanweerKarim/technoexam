@@ -8,10 +8,14 @@ import 'package:tiuexamportal/screens/student/subjects/subjectcarddashbaord.dart
 class WebDashBoard extends StatefulWidget {
   String branch;
   String sem;
+  String userName;
+  String email;
   WebDashBoard({
     super.key,
     required this.branch,
     required this.sem,
+    required this.userName,
+    required this.email,
   });
 
   @override
@@ -53,7 +57,8 @@ class _WebDashBoardState extends State<WebDashBoard> {
                 height: 320.0,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 60.0),
-                  child: ExamsCard(branch: widget.branch, sem: widget.sem),
+                  child: ExamsCard(branch: widget.branch, sem: widget.sem,email: widget.email,
+            userName: widget.userName,),
                 ),
               ),
               SizedBox(

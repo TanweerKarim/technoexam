@@ -51,6 +51,8 @@ class _MobileDashboardState extends State<MobileDashboard> {
                 child: ExamsCard(
                   branch: widget.userdata['branch'],
                   sem: widget.userdata['semester'],
+                  email: widget.userdata['name'],
+            userName: widget.userdata['email'],
                 ),
               ),
             ),

@@ -16,6 +16,8 @@ import 'package:tiuexamportal/screens/admin/dashboard/mobiledashboardadmin.dart'
 import 'package:tiuexamportal/screens/admin/dashboard/webdashboardadmin.dart';
 import 'package:tiuexamportal/screens/student/dashboard/mobiledashboard.dart';
 import 'package:tiuexamportal/screens/student/dashboard/webdashboard.dart';
+import 'package:tiuexamportal/screens/student/feedback/allfeedbacks.dart';
+import 'package:tiuexamportal/screens/student/feedback/feedbackform.dart';
 import 'package:tiuexamportal/utility/mydrawerheader.dart';
 import 'package:tiuexamportal/utility/responsive_layout.dart';
 import 'package:tiuexamportal/utility/utility.dart';
@@ -102,6 +104,8 @@ class _MainScreenState extends State<MainScreen> {
               webScreenLayout: WebDashBoard(
                 branch: userData['branch'],
                 sem: userData['semester'],
+                email: userData['name'],
+                userName: userData['email'],
               ));
         }
       }
@@ -128,7 +132,15 @@ class _MainScreenState extends State<MainScreen> {
     } else if (currentPage == DrawerSections.privacy_policy) {
       // container = PrivacyPolicyPage();
     } else if (currentPage == DrawerSections.send_feedback) {
-      // container = SendFeedbackPage();
+      if (userData['type'] == "admin") {
+        container = AllFeedbacks();
+      } else {
+        container = FeedbackScreen(
+          userName: userData['name'],
+          email: userData['email'],
+          screentype: "Main",
+        );
+      }
     } else if (currentPage == DrawerSections.addstudent) {
       container = ResponsiveLayout(
           mobileScreenLayout: AddStudentMobile(),
@@ -219,6 +231,12 @@ class _MainScreenState extends State<MainScreen> {
               Icons.settings_outlined,
               currentPage == DrawerSections.settings ? true : false,
               userData['type']),
+          menuItem(
+              7,
+              "Feedback",
+              Icons.feedback_outlined,
+              currentPage == DrawerSections.send_feedback ? true : false,
+              userData['type']),
         ],
       ),
     );
@@ -249,7 +267,7 @@ class _MainScreenState extends State<MainScreen> {
             } else if (id == 6) {
               currentPage = DrawerSections.settings;
             } else if (id == 7) {
-              currentPage = DrawerSections.notifications;
+              currentPage = DrawerSections.send_feedback;
             } else if (id == 8) {
               currentPage = DrawerSections.privacy_policy;
             } else if (id == 9) {

@@ -8,12 +8,16 @@ class QuestionAns extends StatefulWidget {
   String subject;
   String branch;
   String totaltime;
+  String userName;
+  String email;
   QuestionAns({
     super.key,
     required this.subject,
     required this.semester,
     required this.branch,
     required this.totaltime,
+    required this.userName,
+    required this.email,
   });
 
   @override
@@ -30,12 +34,15 @@ class _QuestionAnsState extends State<QuestionAns> {
             semester: widget.semester,
             branch: widget.branch,
             totaltime: widget.totaltime,
+            email: widget.email,
+            userName: widget.userName,
           ),
           webScreenLayout: QuestionAnsWeb(
               subject: widget.subject,
               semester: widget.semester,
               branch: widget.branch,
-              totaltime: widget.totaltime)),
+              totaltime: widget.totaltime,email: widget.email,
+            userName: widget.userName,)),
     );
   }
 }

@@ -18,7 +18,7 @@ class QuestionCard extends StatefulWidget {
     required this.option1,
     required this.option2,
     required this.option3,
-    required this.option4,
+    required this.option4, required correctopt,
   });
 
   @override

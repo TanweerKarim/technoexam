@@ -67,6 +67,32 @@ class _LoginWebViewState extends State<LoginWebView> {
                 onChanged: (value) => setState(() {
                   password = value;
                 }),
+                onSubmitted: (value) async {
+                  setState(() {
+                    password = value;
+                  });
+                  if (email == '' || password == '') {
+                    showSnackBar(
+                        context: context, content: 'All fields are required');
+                  } else {
+                    await FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
+                            email: email, password: password)
+                        .then((value) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainScreen(),
+                        ),
+                        (route) => false,
+                      );
+                    }).onError((error, stackTrace) {
+                      showSnackBar(
+                          context: context,
+                          content: "Invalid email or password");
+                    });
+                  }
+                },
                 obscureText: true,
                 enableSuggestions: false,
                 autocorrect: false,
@@ -93,12 +119,12 @@ class _LoginWebViewState extends State<LoginWebView> {
               width: widthsize * 0.3,
               height: 40,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (email == '' || password == '') {
                     showSnackBar(
                         context: context, content: 'All fields are required');
                   } else {
-                    FirebaseAuth.instance
+                    await FirebaseAuth.instance
                         .signInWithEmailAndPassword(
                             email: email, password: password)
                         .then((value) {
@@ -108,9 +134,11 @@ class _LoginWebViewState extends State<LoginWebView> {
                           builder: (context) => MainScreen(),
                         ),
                         (route) => false,
-                      ).onError((error, stackTrace) => showSnackBar(
+                      );
+                    }).onError((error, stackTrace) {
+                      showSnackBar(
                           context: context,
-                          content: 'Invalid User name or password'));
+                          content: "Invalid email or password");
                     });
                   }
                 },

@@ -9,10 +9,14 @@ import 'package:tiuexamportal/screens/student/dashboard/exam/exampage.dart';
 class ExamsCard extends StatefulWidget {
   String branch;
   String sem;
+  String userName;
+  String email;
   ExamsCard({
     super.key,
     required this.branch,
     required this.sem,
+    required this.userName,
+    required this.email,
   });
 
   @override
@@ -165,6 +169,8 @@ class _ExamsCardState extends State<ExamsCard> {
                                               branch: widget.branch,
                                               totaltime: storedocs[i]
                                                   ['totaltime'],
+                                                  email: widget.email,
+            userName: widget.userName,
                                             ),
                                           ),
                                           (route) => true,

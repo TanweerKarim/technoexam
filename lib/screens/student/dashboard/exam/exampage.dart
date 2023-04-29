@@ -11,13 +11,17 @@ class ExamPage extends StatefulWidget {
   String subject;
   String branch;
   String totaltime;
+  String userName;
+  String email;
   ExamPage(
       {super.key,
       required this.uid,
       required this.semester,
       required this.subject,
       required this.branch,
-      required this.totaltime});
+      required this.totaltime,
+      required this.userName,
+    required this.email,});
 
   @override
   State<ExamPage> createState() => _ExamPageState();
@@ -177,6 +181,8 @@ class _ExamPageState extends State<ExamPage> {
                                   semester: widget.semester,
                                   branch: widget.branch,
                                   totaltime: widget.totaltime,
+                                  email: widget.email,
+            userName: widget.userName,
                                 ),
                               ),
                               (route) => false,
@@ -220,6 +226,8 @@ class _ExamPageState extends State<ExamPage> {
                                             semester: widget.semester,
                                             branch: widget.branch,
                                             totaltime: widget.totaltime,
+                                            email: widget.email,
+            userName: widget.userName,
                                           ),
                                         ),
                                         (route) => false,

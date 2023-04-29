@@ -1,21 +1,29 @@
 import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:tiuexamportal/screens/mainscreen.dart';
-import 'package:tiuexamportal/utility/utility.dart';
+import 'package:tiuexamportal/screens/student/dashboard/exam/questioncard.dart';
+import 'package:tiuexamportal/screens/student/feedback/feedbackform.dart';
 
 class QuestionAnsMobile extends StatefulWidget {
-  String semester;
   String subject;
+  String semester;
   String branch;
   String totaltime;
+  String userName;
+  String email;
   QuestionAnsMobile({
     super.key,
     required this.subject,
     required this.semester,
     required this.branch,
     required this.totaltime,
+    required this.userName,
+    required this.email,
   });
 
   @override
@@ -26,6 +34,7 @@ List<int> marksofques = [];
 List<int> markindex = [];
 HashSet<int> qnaindex = HashSet<int>();
 List<bool> questionattempt = [];
+List<String> selectedAnswer = [];
 int count = 0;
 
 class _QuestionAnsMobileState extends State<QuestionAnsMobile>
@@ -212,508 +221,171 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
       'totalmarks': totalmarks,
       'marksobtained': total,
       'subject': widget.subject,
-    }).then((value) => Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MainScreen(),
-              ),
-              (route) => false,
-            ));
+    }).then((value) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FeedbackScreen(
+            email: widget.email,
+            userName: widget.userName,
+            screentype: "Exam",
+          ),
+        ),
+        (route) => false,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(questionattempt.toString());
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.subject),
-        backgroundColor: Colors.blue,
-      ),
-      drawer: Drawer(
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  AnimatedBuilder(
-                    animation: controller,
-                    builder: (context, child) => Text(
-                      countText,
+        appBar: AppBar(
+          title: Text(widget.subject),
+          backgroundColor: Colors.blue,
+        ),
+        drawer: Drawer(
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    AnimatedBuilder(
+                      animation: controller,
+                      builder: (context, child) => Text(
+                        countText,
+                        style: TextStyle(
+                          fontSize: 60,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Attempted Questions :",
                       style: TextStyle(
-                        fontSize: 60,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Attempted Questions :",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    height: 400,
-                    child: GridView.count(
-                      crossAxisCount: 5,
-                      crossAxisSpacing: 5.0,
-                      mainAxisSpacing: 5.0,
-                      children: [
-                        for (int i = 0; i < index; i++) ...[
-                          if (!isLoading) ...[
-                            Questio(
-                              count: i,
-                              control: _pageController,
-                            )
-                          ] else ...[
-                            Container()
-                          ],
-                        ]
-                      ],
+                    SizedBox(
+                      height: 400,
+                      child: GridView.count(
+                        crossAxisCount: 5,
+                        crossAxisSpacing: 5.0,
+                        mainAxisSpacing: 5.0,
+                        children: [
+                          for (int i = 0; i < index; i++) ...[
+                            if (!isLoading) ...[
+                              Questio(
+                                count: i,
+                              )
+                            ] else ...[
+                              Container()
+                            ],
+                          ]
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: Container(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.78,
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('courses')
-                    .doc('courseName')
-                    .collection(widget.branch)
-                    .doc(widget.semester)
-                    .collection('subjects')
-                    .doc(widget.subject)
-                    .collection('qna')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.hasData) {
-                    final List storedocs = [];
-                    snapshot.data!.docs.map((DocumentSnapshot document) {
-                      Map a = document.data() as Map<String, dynamic>;
-                      storedocs.add(a);
-                    }).toList();
-                    marksofques.clear();
-                    for (int i = 0; i < storedocs.length; i++) {
-                      marksofques.add(int.parse(storedocs[i]['marks']));
-                    }
-                    return ListView(
-                      controller: _pageController,
-                      children: [
-                        for (var i = 0; i < storedocs.length; i++) ...[
-                          QuestionCard(
-                            question: storedocs[i]['question'],
-                            index: i,
-                            option1: storedocs[i]['option1'],
-                            option2: storedocs[i]['option2'],
-                            option3: storedocs[i]['option3'],
-                            option4: storedocs[i]['option4'],
-                            correctopt: storedocs[i]['correctoption'],
-                            marks: int.parse(storedocs[i]['marks']),
+        body: Container(
+          child: FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('courses')
+                  .doc('courseName')
+                  .collection(widget.branch)
+                  .doc(widget.semester)
+                  .collection('subjects')
+                  .doc(widget.subject)
+                  .collection('qna')
+                  .orderBy('question')
+                  .get(),
+              builder: (_, snapshot) {
+                if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Text("Loading");
+                }
+                marksofques.clear();
+                selectedAnswer.clear();
+                questionattempt.clear();
+                markindex.clear();
+                qnaindex.clear();
+                int index = -1;
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 730,
+                      child: ListView(
+                          children: snapshot.data!.docs
+                              .map((DocumentSnapshot document) {
+                        Map<String, dynamic> data =
+                            document.data()! as Map<String, dynamic>;
+                        marksofques.add(int.parse(data['marks']));
+                        questionattempt.add(false);
+                        selectedAnswer.add(" ");
+                        // debugPrint(marksofques.toString());
+                        index++;
+                        debugPrint(selectedAnswer.toString());
+                        return QuestionCard(
+                          question: data['question'],
+                          option1: data['option1'],
+                          option2: data['option2'],
+                          option3: data['option3'],
+                          option4: data['option4'],
+                          correctopt: data['correctoption'],
+                          marks: data['correctoption'],
+                          index: index,
+                        );
+                        // questionCard(
+                        //     data['question'],
+                        //     data['option1'],
+                        //     data['option2'],
+                        //     data['option3'],
+                        //     data['option4'],
+                        //     data['correctoption'],
+                        //     data['correctoption'],
+                        //     index);
+                      }).toList()),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: SizedBox(
+                        height: 40,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            submitans();
+                            debugPrint(selectedAnswer.toString() +
+                                " " +
+                                questionattempt.toString());
+                          },
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.blue)),
+                          child: const Padding(
+                            padding: EdgeInsets.all(4),
+                            child: Text(
+                              'Submit',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
-                        ]
-                      ],
-                    );
-                  } else {
-                    if (snapshot.data!.docs.isEmpty) {
-                      return Container(
-                        child: const Center(
-                          child: Text("No Active Exam"),
                         ),
-                      );
-                    } else {
-                      return Container();
-                    }
-                  }
-                },
-              ),
-            ),
-            Spacer(),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: SizedBox(
-                height: 40,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    submitans();
-                    // debugPrint(
-                    //     totalmarks.toString() + " " + total.toString() + " ");
-                  },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
-                  child: const Padding(
-                    padding: EdgeInsets.all(4),
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class UnattemptedQuestion extends StatefulWidget {
-  int num;
-  UnattemptedQuestion({super.key, required this.num});
-
-  @override
-  State<UnattemptedQuestion> createState() => _UnattemptedQuestionState();
-}
-
-class _UnattemptedQuestionState extends State<UnattemptedQuestion> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 3),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(14),
-                    bottomLeft: Radius.circular(14)),
-                color: Colors.blue),
-            child: Text(
-              widget.num.toString(),
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(14),
-                  bottomRight: Radius.circular(14),
-                ),
-                color: Colors.black54),
-            child: Text(
-              "Not Attempted",
-              style: TextStyle(color: Colors.white),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class QuestionCard extends StatefulWidget {
-  String question;
-  int index;
-  String option1;
-  String option2;
-  String option3;
-  String option4;
-  String correctopt;
-  int marks;
-
-  QuestionCard({
-    super.key,
-    required this.question,
-    required this.index,
-    required this.option1,
-    required this.option2,
-    required this.option3,
-    required this.option4,
-    required this.correctopt,
-    required this.marks,
-  });
-
-  @override
-  State<QuestionCard> createState() => _QuestionCardState();
-}
-
-class _QuestionCardState extends State<QuestionCard> {
-  String selected = '';
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              "Q${widget.index + 1} ${widget.question}",
-              style:
-                  TextStyle(fontSize: 18, color: Colors.black.withOpacity(0.8)),
-            ),
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          GestureDetector(
-            onTap: () {
-              if (widget.correctopt.toLowerCase() ==
-                  widget.option1.toLowerCase()) {
-                if (!markindex.contains(widget.index)) {
-                  setState(() {
-                    markindex.add(widget.index);
-                  });
-                }
-              } else {
-                if (markindex.contains(widget.index)) {
-                  setState(() {
-                    markindex.remove(widget.index);
-                  });
-                }
-              }
-              if (!qnaindex.contains(widget.index)) {
-                setState(() {
-                  questionattempt[widget.index] = true;
-                  qnaindex.add(widget.index);
-                });
-              }
-
-              setState(() {
-                selected = widget.option1;
-              });
-            },
-            child: OptionTile(
-              option: "A",
-              description: widget.option1,
-              selected: selected,
-            ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          GestureDetector(
-            onTap: () {
-              if (widget.correctopt.toLowerCase() ==
-                  widget.option2.toLowerCase()) {
-                if (!markindex.contains(widget.index)) {
-                  setState(() {
-                    markindex.add(widget.index);
-                  });
-                }
-              } else {
-                if (markindex.contains(widget.index)) {
-                  setState(() {
-                    markindex.remove(widget.index);
-                  });
-                }
-              }
-              if (!qnaindex.contains(widget.index)) {
-                setState(() {
-                  questionattempt[widget.index] = true;
-                  qnaindex.add(widget.index);
-                });
-              }
-              setState(() {
-                selected = widget.option2;
-              });
-            },
-            child: OptionTile(
-              option: "B",
-              description: widget.option2,
-              selected: selected,
-            ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          GestureDetector(
-            onTap: () {
-              if (widget.correctopt.toLowerCase() ==
-                  widget.option3.toLowerCase()) {
-                if (!markindex.contains(widget.index)) {
-                  setState(() {
-                    markindex.add(widget.index);
-                  });
-                }
-              } else {
-                if (markindex.contains(widget.index)) {
-                  setState(() {
-                    markindex.remove(widget.index);
-                  });
-                }
-              }
-              if (!qnaindex.contains(widget.index)) {
-                setState(() {
-                  questionattempt[widget.index] = true;
-                  qnaindex.add(widget.index);
-                });
-              }
-              setState(() {
-                selected = widget.option3;
-              });
-            },
-            child: OptionTile(
-              option: "C",
-              description: widget.option3,
-              selected: selected,
-            ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          GestureDetector(
-            onTap: () {
-              if (widget.correctopt.toLowerCase() ==
-                  widget.option4.toLowerCase()) {
-                if (!markindex.contains(widget.index)) {
-                  setState(() {
-                    markindex.add(widget.index);
-                  });
-                }
-              } else {
-                if (markindex.contains(widget.index)) {
-                  setState(() {
-                    markindex.remove(widget.index);
-                  });
-                }
-              }
-              if (!qnaindex.contains(widget.index)) {
-                setState(() {
-                  questionattempt[widget.index] = true;
-                  qnaindex.add(widget.index);
-                });
-              }
-              setState(() {
-                selected = widget.option4;
-              });
-            },
-            child: OptionTile(
-              option: "D",
-              description: widget.option4,
-              selected: selected,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class Questio extends StatefulWidget {
-  int count;
-  PageController control;
-  Questio({super.key, required this.count, required this.control});
-
-  @override
-  State<Questio> createState() => _QuestioState();
-}
-
-class _QuestioState extends State<Questio> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(1.0),
-      child: InkWell(
-        onTap: () {
-          
-          Navigator.pop(context);
-          widget.control.jumpTo(widget.count.toDouble() * 150);          // close the drawer
-        },
-        child: Container(
-          height: 30,
-          width: 30,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(5.0),
-              ),
-              color:
-                  questionattempt[widget.count] ? Colors.green : Colors.grey),
-          child: Center(
-            child: Text((widget.count + 1).toString()),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class OptionTile extends StatefulWidget {
-  String option;
-  String description;
-  String selected;
-  OptionTile({
-    super.key,
-    required this.option,
-    required this.description,
-    required this.selected,
-  });
-
-  @override
-  State<OptionTile> createState() => _OptionTileState();
-}
-
-class _OptionTileState extends State<OptionTile> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        children: [
-          Container(
-            height: 28,
-            width: 28,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: widget.selected == widget.description
-                        ? Colors.green
-                        : Colors.grey,
-                    width: 1.5),
-                color: widget.selected == widget.description
-                    ? Colors.green
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(24)),
-            child: Text(
-              widget.option,
-              style: TextStyle(
-                color: widget.selected == widget.description
-                    ? Colors.white
-                    : Colors.grey,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 8,
-          ),
-          Text(
-            widget.description,
-            style: TextStyle(fontSize: 17, color: Colors.black54),
-          )
-        ],
-      ),
-    );
+                      ),
+                    )
+                  ],
+                );
+              }),
+        ));
   }
 }

@@ -67,6 +67,32 @@ class _LoginMobileViewState extends State<LoginMobileView> {
                   onChanged: (value) => setState(() {
                     password = value;
                   }),
+                  onSubmitted: (value) async {
+                    setState(() {
+                      password = value;
+                    });
+                    if (email == '' || password == '') {
+                      showSnackBar(
+                          context: context, content: 'All fields are required');
+                    } else {
+                      await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: email, password: password)
+                          .then((value) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      }).onError((error, stackTrace) {
+                        showSnackBar(
+                            context: context,
+                            content: "Invalid email or password");
+                      });
+                    }
+                  },
                   obscureText: true,
                   enableSuggestions: false,
                   autocorrect: false,
@@ -106,7 +132,9 @@ class _LoginMobileViewState extends State<LoginMobileView> {
                         (route) => false,
                       );
                     }).onError((error, stackTrace) {
-                      showSnackBar(context: context, content: error.toString());
+                      showSnackBar(
+                          context: context,
+                          content: "Invalid email or password");
                     });
                   },
                   child: Text("Sign In"),
