@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tiuexamportal/auth/mobile/forgetpasswordmobile.dart';
 import 'package:tiuexamportal/globals.dart';
 import 'package:tiuexamportal/screens/mainscreen.dart';
 import 'package:tiuexamportal/utility/utility.dart';
@@ -104,12 +105,22 @@ class _LoginMobileViewState extends State<LoginMobileView> {
               SizedBox(
                 height: 10,
               ),
-              SizedBox(
-                width: widthsize * 0.85,
-                child: Text(
-                  "Forget password?",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.blue),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => ForgetpasswordMobile(),
+                    ),
+                  );
+                },
+                child: SizedBox(
+                  width: widthsize * 0.85,
+                  child: Text(
+                    "Forget password?",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: Colors.blue),
+                  ),
                 ),
               ),
               SizedBox(

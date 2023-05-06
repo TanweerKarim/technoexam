@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:tiuexamportal/events/eventscard.dart';
 import 'package:tiuexamportal/notes/notescard.dart';
+import 'package:tiuexamportal/screens/admin/addstudents/userData.dart';
 import 'package:tiuexamportal/screens/student/dashboard/exam/examscard.dart';
 import 'package:tiuexamportal/screens/student/subjects/subjectcarddashbaord.dart';
 
@@ -51,8 +53,8 @@ class _MobileDashboardState extends State<MobileDashboard> {
                 child: ExamsCard(
                   branch: widget.userdata['branch'],
                   sem: widget.userdata['semester'],
-                  email: widget.userdata['name'],
-            userName: widget.userdata['email'],
+                  email: widget.userdata['email'],
+                  userName: widget.userdata['name'],
                 ),
               ),
             ),
@@ -72,7 +74,7 @@ class _MobileDashboardState extends State<MobileDashboard> {
                           child: Padding(
                             padding: EdgeInsets.only(left: 15.0),
                             child: Text(
-                              "Subjects",
+                              "Events",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Colors.blue,
@@ -84,18 +86,13 @@ class _MobileDashboardState extends State<MobileDashboard> {
                         const SizedBox(
                           height: 20,
                         ),
-                        SizedBox(
-                          height: 150.0,
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
-                            child: ListView(
-                              children: [
-                                SubjectCardDashboard(
-                                    courseName: widget.userdata['branch'],
-                                    sem: widget.userdata['semester']),
-                              ],
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: SizedBox(
+                            height: 150.0,
+                            width: double.infinity,
+                            child: EventsCard(
+                                userType: widget.userdata['userType']),
                           ),
                         ),
                       ],

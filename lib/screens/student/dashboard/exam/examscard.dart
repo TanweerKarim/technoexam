@@ -55,6 +55,7 @@ class _ExamsCardState extends State<ExamsCard> {
             Map a = document.data() as Map<String, dynamic>;
             storedocs.add(a);
           }).toList();
+          debugPrint(storedocs.toString());
           String currentTimestamp =
               DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.now());
           DateTime dt1 = DateTime.parse(currentTimestamp);
@@ -102,7 +103,7 @@ class _ExamsCardState extends State<ExamsCard> {
                                 Text(DateFormat("dd-MM-yyyy").format(
                                     DateTime.parse(storedocs[i]['examDate'] +
                                         " " +
-                                        storedocs[i]['startTime']))), 
+                                        storedocs[i]['startTime']))),
                               ],
                             ),
                             Row(
@@ -169,8 +170,8 @@ class _ExamsCardState extends State<ExamsCard> {
                                               branch: widget.branch,
                                               totaltime: storedocs[i]
                                                   ['totaltime'],
-                                                  email: widget.email,
-            userName: widget.userName,
+                                              email: widget.email,
+                                              userName: widget.userName,
                                             ),
                                           ),
                                           (route) => true,

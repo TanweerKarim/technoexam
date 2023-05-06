@@ -68,6 +68,7 @@ class _ResultsTableState extends State<ResultsTable> {
         .collection(widget.branch)
         .doc(widget.semester)
         .collection('subjects')
+        .orderBy('subjectName')
         .get();
     studentsData = querySnapshot1.docs.map((doc) => doc.data()).toList();
     subjectData = querySnapshot2.docs.map((doc) => doc.data()).toList();
@@ -87,8 +88,10 @@ class _ResultsTableState extends State<ResultsTable> {
           .collection('users')
           .doc(actualStudentsData[i]["uid"])
           .collection(widget.semester)
+          .orderBy('subject')
           .get();
       marksData = querySnapshot3.docs.map((doc) => doc.data()).toList();
+      // debugPrint(marksData.toString());
       for (int j = 0; j < subjectData.length; j++) {
         if (marksData.length == subjectData.length) {
           if (marksData.isNotEmpty) {
@@ -101,15 +104,17 @@ class _ResultsTableState extends State<ResultsTable> {
           } else {
             marks[i][j] = 0;
           }
-        } else if (marksData.length < subjectData.length) {
+        } else if (marksData.length == 0) {
+          marks[i][j] = 0;
+        } else if (marksData.length < subjectData.length ||
+            marksData.length > subjectData.length) {
           if (j < marksData.length) {
             marks[i][j] = marksData[j]['marksobtained'];
           } else {
             marks[i][j] = 0;
           }
-        } else {
-          marks[i][j] = 0;
         }
+        debugPrint(marks.toString());
       }
       // debugPrint(marksData[i].toString());
     } //generate(3, (_) => [])

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:tiuexamportal/auth/mobile/mobilelogin.dart';
+import 'package:tiuexamportal/auth/mobile/restpasswordmobile.dart';
+import 'package:tiuexamportal/auth/web/resetpasswordweb.dart';
 import 'package:tiuexamportal/auth/web/weblogin.dart';
 import 'package:tiuexamportal/auth/web/weblogout.dart';
 import 'package:tiuexamportal/events/eventsmainscreen.dart';
@@ -71,7 +73,22 @@ class _MainScreenState extends State<MainScreen> {
         });
       }
     } catch (e) {
-      showSnackBar(context: context, content: e.toString());
+      // showSnackBar(context: context, content: e.toString());
+      await FirebaseAuth.instance.signOut().then((value) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ResponsiveLayout(
+              mobileScreenLayout: LoginMobileView(),
+              webScreenLayout: LoginWebView(),
+            ),
+          ),
+          (route) => false,
+        );
+        showSnackBar(
+            context: context,
+            content: "There was some error with your account");
+      });
     }
     setState(() {
       isLoading = false;
@@ -106,6 +123,7 @@ class _MainScreenState extends State<MainScreen> {
                 sem: userData['semester'],
                 email: userData['name'],
                 userName: userData['email'],
+                userType: userData['userType'],
               ));
         }
       }
@@ -127,8 +145,14 @@ class _MainScreenState extends State<MainScreen> {
       container = NotesMainScreen();
     } else if (currentPage == DrawerSections.settings) {
       container = LogoutWeb();
-    } else if (currentPage == DrawerSections.notifications) {
-      // container = NotificationsPage();
+    } else if (currentPage == DrawerSections.reset_password) {
+      container = ResponsiveLayout(
+          mobileScreenLayout: RestPasswordMobile(
+            email: userData['email'],
+          ),
+          webScreenLayout: RestPasswordWeb(
+            email: userData['email'],
+          ));
     } else if (currentPage == DrawerSections.privacy_policy) {
       // container = PrivacyPolicyPage();
     } else if (currentPage == DrawerSections.send_feedback) {
@@ -226,16 +250,22 @@ class _MainScreenState extends State<MainScreen> {
               currentPage == DrawerSections.notes ? true : false,
               userData['type']),
           menuItem(
-              6,
-              "Settings",
-              Icons.settings_outlined,
-              currentPage == DrawerSections.settings ? true : false,
-              userData['type']),
-          menuItem(
               7,
               "Feedback",
               Icons.feedback_outlined,
               currentPage == DrawerSections.send_feedback ? true : false,
+              userData['type']),
+          menuItem(
+              6,
+              "Logout",
+              Icons.logout_rounded,
+              currentPage == DrawerSections.settings ? true : false,
+              userData['type']),
+          menuItem(
+              8,
+              "Reset password",
+              Icons.restart_alt,
+              currentPage == DrawerSections.reset_password ? true : false,
               userData['type']),
         ],
       ),
@@ -269,7 +299,7 @@ class _MainScreenState extends State<MainScreen> {
             } else if (id == 7) {
               currentPage = DrawerSections.send_feedback;
             } else if (id == 8) {
-              currentPage = DrawerSections.privacy_policy;
+              currentPage = DrawerSections.reset_password;
             } else if (id == 9) {
               currentPage = DrawerSections.send_feedback;
             }
@@ -315,4 +345,5 @@ enum DrawerSections {
   notifications,
   privacy_policy,
   send_feedback,
+  reset_password,
 }

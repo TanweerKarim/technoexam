@@ -37,13 +37,18 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           : null,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          bool examsc = false;
+          if (widget.screentype == "Exam") {
+            examsc = true;
+          }
           String uid = uuid.v4();
           await FirebaseFirestore.instance.collection('feedback').doc(uid).set({
             'examExp': examExp,
             'ux': ux,
             'comment': comments,
             'username': widget.userName,
-            'email': widget.email
+            'email': widget.email,
+            'examcs': examsc
           }).then((value) {
             Navigator.pop(context);
             showSnackBar(

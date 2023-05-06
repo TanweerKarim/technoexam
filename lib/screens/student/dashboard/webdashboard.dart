@@ -5,18 +5,21 @@ import 'package:tiuexamportal/notes/notescard.dart';
 import 'package:tiuexamportal/screens/student/dashboard/exam/examscard.dart';
 import 'package:tiuexamportal/screens/student/subjects/subjectcarddashbaord.dart';
 
+import '../../../events/eventscard.dart';
+
 class WebDashBoard extends StatefulWidget {
   String branch;
   String sem;
   String userName;
   String email;
-  WebDashBoard({
-    super.key,
-    required this.branch,
-    required this.sem,
-    required this.userName,
-    required this.email,
-  });
+  String userType;
+  WebDashBoard(
+      {super.key,
+      required this.branch,
+      required this.sem,
+      required this.userName,
+      required this.email,
+      required this.userType});
 
   @override
   State<WebDashBoard> createState() => _WebDashBoardState();
@@ -57,8 +60,12 @@ class _WebDashBoardState extends State<WebDashBoard> {
                 height: 320.0,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 60.0),
-                  child: ExamsCard(branch: widget.branch, sem: widget.sem,email: widget.email,
-            userName: widget.userName,),
+                  child: ExamsCard(
+                    branch: widget.branch,
+                    sem: widget.sem,
+                    email: widget.email,
+                    userName: widget.userName,
+                  ),
                 ),
               ),
               SizedBox(
@@ -72,12 +79,15 @@ class _WebDashBoardState extends State<WebDashBoard> {
                     Expanded(
                       child: Column(
                         children: [
+                          SizedBox(
+                            height: 20,
+                          ),
                           const SizedBox(
                             width: double.infinity,
                             child: Padding(
                               padding: EdgeInsets.only(left: 60.0),
                               child: Text(
-                                "Subjects",
+                                "Events",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   color: Colors.blue,
@@ -90,13 +100,12 @@ class _WebDashBoardState extends State<WebDashBoard> {
                             height: 20,
                           ),
                           SizedBox(
+                            height: 300,
                             width: double.infinity,
-                            height: 150.0,
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 60.0, right: 20.0),
-                              child: SubjectCardDashboard(
-                                  courseName: widget.branch, sem: widget.sem),
+                              padding:
+                                  const EdgeInsets.only(top: 20.0, left: 60),
+                              child: EventsCard(userType: widget.userType),
                             ),
                           ),
                         ],
@@ -123,7 +132,7 @@ class _WebDashBoardState extends State<WebDashBoard> {
                             height: 10,
                           ),
                           SizedBox(
-                            height: 150.0,
+                            height: 300.0,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: NotesCard(),
