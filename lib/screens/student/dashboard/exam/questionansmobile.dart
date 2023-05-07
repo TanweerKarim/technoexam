@@ -35,7 +35,6 @@ List<int> markindex = [];
 HashSet<int> qnaindex = HashSet<int>();
 List<bool> questionattempt = [];
 List<String> selectedAnswer = [];
-int count = 0;
 
 class _QuestionAnsMobileState extends State<QuestionAnsMobile>
     with TickerProviderStateMixin, WidgetsBindingObserver {
@@ -43,7 +42,7 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
   late final DateTime endTime;
   late AnimationController controller;
   PageController _pageController = PageController(initialPage: 0);
-
+  int count = 0;
   String get countText {
     Duration count = controller.duration! * controller.value;
     return controller.isDismissed
@@ -128,18 +127,14 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
       'totalmarks': totalmarks,
       'marksobtained': '0',
       'subject': widget.subject,
-    }).then((value) => Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MainScreen(),
-              ),
-              (route) => false,
-            ));
-  }
-
-  void showAlert() {
-    count++;
-    if (count == 4) {
+    }).then((value) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainScreen(),
+        ),
+        (route) => false,
+      );
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -148,12 +143,19 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
               'You are trying to use unfair means and your exam is cancelled'),
           actions: <Widget>[
             TextButton(
-              onPressed: () => cancelExam(),
+              onPressed: () => Navigator.pop(context),
               child: const Text('OK'),
             ),
           ],
         ),
       );
+    });
+  }
+
+  void showAlert() {
+    count++;
+    if (count >= 4) {
+      cancelExam();
     } else {
       showDialog<String>(
         context: context,

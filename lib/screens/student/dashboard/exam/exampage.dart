@@ -13,15 +13,16 @@ class ExamPage extends StatefulWidget {
   String totaltime;
   String userName;
   String email;
-  ExamPage(
-      {super.key,
-      required this.uid,
-      required this.semester,
-      required this.subject,
-      required this.branch,
-      required this.totaltime,
-      required this.userName,
-    required this.email,});
+  ExamPage({
+    super.key,
+    required this.uid,
+    required this.semester,
+    required this.subject,
+    required this.branch,
+    required this.totaltime,
+    required this.userName,
+    required this.email,
+  });
 
   @override
   State<ExamPage> createState() => _ExamPageState();
@@ -107,14 +108,6 @@ class _ExamPageState extends State<ExamPage> {
                         child: MyBullet(),
                       ),
                       title: const Text(
-                          'You can attempt this test multiple times.'),
-                    ),
-                    ListTile(
-                      leading: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: MyBullet(),
-                      ),
-                      title: const Text(
                           'You cannot pause while attempting the test.'),
                     ),
                     ListTile(
@@ -182,7 +175,7 @@ class _ExamPageState extends State<ExamPage> {
                                   branch: widget.branch,
                                   totaltime: widget.totaltime,
                                   email: widget.email,
-            userName: widget.userName,
+                                  userName: widget.userName,
                                 ),
                               ),
                               (route) => false,
@@ -227,7 +220,7 @@ class _ExamPageState extends State<ExamPage> {
                                             branch: widget.branch,
                                             totaltime: widget.totaltime,
                                             email: widget.email,
-            userName: widget.userName,
+                                            userName: widget.userName,
                                           ),
                                         ),
                                         (route) => false,

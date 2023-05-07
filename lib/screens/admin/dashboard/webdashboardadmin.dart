@@ -42,12 +42,18 @@ class _WebDashboardAdminState extends State<WebDashboardAdmin> {
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                height: 320.0,
-                child: CourseTile(),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 60.0,
+                  right: 60,
+                ),
+                child: SizedBox(
+                  height: 320.0,
+                  child: CourseTile(),
+                ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               SizedBox(
                 height: 400,
@@ -60,7 +66,7 @@ class _WebDashboardAdminState extends State<WebDashboardAdmin> {
                           const SizedBox(
                             width: double.infinity,
                             child: Padding(
-                              padding: EdgeInsets.only(left: 60.0),
+                              padding: EdgeInsets.only(top: 20, left: 60.0),
                               child: Text(
                                 "Events",
                                 textAlign: TextAlign.left,
@@ -74,10 +80,13 @@ class _WebDashboardAdminState extends State<WebDashboardAdmin> {
                           const SizedBox(
                             height: 20,
                           ),
-                          SizedBox(
-                            height: 150,
-                            width: double.infinity,
-                            child: EventsCard(userType: widget.userType),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 60, top: 12),
+                            child: SizedBox(
+                              height: 150,
+                              width: double.infinity,
+                              child: EventsCard(userType: widget.userType),
+                            ),
                           ),
                         ],
                       ),
@@ -102,9 +111,12 @@ class _WebDashboardAdminState extends State<WebDashboardAdmin> {
                           const SizedBox(
                             height: 10,
                           ),
-                          SizedBox(
-                            height: 150,
-                            child: NotesCard(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 60.0),
+                            child: SizedBox(
+                              height: 150,
+                              child: NotesCard(),
+                            ),
                           ),
                         ],
                       ),

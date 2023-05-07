@@ -85,23 +85,6 @@ class _EditSubjectDetailsMobileState extends State<EditSubjectDetailsMobile> {
                 SizedBox(
                   width: widthsize,
                   child: TextField(
-                    onChanged: (value) => setState(() {
-                      subjectname = value;
-                    }),
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    keyboardType: TextInputType.name,
-                    decoration: InputDecoration(
-                      hintText: widget.subject,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: widthsize,
-                  child: TextField(
                     //editing controller of this TextField
                     decoration: InputDecoration(
                         icon: const Icon(

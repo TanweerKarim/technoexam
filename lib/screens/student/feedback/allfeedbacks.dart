@@ -24,7 +24,7 @@ class _AllFeedbacksState extends State<AllFeedbacks> {
             ),
           ),
           SizedBox(
-            height: 500,
+            height: 600,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: FeedbackCard(),

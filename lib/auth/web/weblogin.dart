@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tiuexamportal/auth/web/forgetpasswordweb.dart';
 import 'package:tiuexamportal/screens/mainscreen.dart';
 import 'package:tiuexamportal/utility/utility.dart';
 
@@ -106,10 +107,20 @@ class _LoginWebViewState extends State<LoginWebView> {
             ),
             SizedBox(
               width: widthsize * 0.3,
-              child: Text(
-                "Forget password?",
-                textAlign: TextAlign.left,
-                style: TextStyle(color: Colors.blue),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ForgetpasswordWeb(),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Forget password?",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.blue),
+                ),
               ),
             ),
             SizedBox(

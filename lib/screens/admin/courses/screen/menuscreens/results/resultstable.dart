@@ -82,7 +82,7 @@ class _ResultsTableState extends State<ResultsTable> {
         k++;
       }
     }
-    debugPrint(actualStudentsData.length.toString());
+    // debugPrint(actualStudentsData.length.toString());
     for (int i = 0; i < actualStudentsData.length; i++) {
       QuerySnapshot querySnapshot3 = await FirebaseFirestore.instance
           .collection('users')
@@ -91,31 +91,77 @@ class _ResultsTableState extends State<ResultsTable> {
           .orderBy('subject')
           .get();
       marksData = querySnapshot3.docs.map((doc) => doc.data()).toList();
-      // debugPrint(marksData.toString());
-      for (int j = 0; j < subjectData.length; j++) {
-        if (marksData.length == subjectData.length) {
-          if (marksData.isNotEmpty) {
-            // if (marksData[j]['marksobtained'] != null) {
-            //   marks[i][j] = marksData[j]['marksobtained'];
-            // } else {
-            //   marks[i][j] = 0;
-            // }
-            marks[i][j] = marksData[j]['marksobtained'];
-          } else {
-            marks[i][j] = 0;
+      int chk = 0;
+      //logic 2
+      if (marksData.length == subjectData.length) {
+        for (int j = 0; j < subjectData.length; j++) {
+          marks[i][j] = marksData[j]['marksobtained'];
+        }
+      } else if (marksData.length < subjectData.length) {
+        for (int k = 0; k < subjectData.length; k++) {
+          for (chk = 0; chk < marksData.length; chk++) {
+            debugPrint(marksData[chk]['subject'] +
+                "," +
+                subjectData[k]['subjectName']);
+            if (marksData[chk]['subject'] == subjectData[k]['subjectName']) {
+              marks[i][k] = marksData[chk]['marksobtained'];
+              break;
+            }
           }
-        } else if (marksData.length == 0) {
-          marks[i][j] = 0;
-        } else if (marksData.length < subjectData.length ||
-            marksData.length > subjectData.length) {
-          if (j < marksData.length) {
-            marks[i][j] = marksData[j]['marksobtained'];
-          } else {
-            marks[i][j] = 0;
+          if (chk == marksData.length) {
+            marks[i][k] = 0;
           }
         }
-        debugPrint(marks.toString());
       }
+      //logic2 ends
+      //logic 1
+      // for (int j = 0; j < subjectData.length; j++) {
+      //   if (marksData.isNotEmpty) {
+      //     if (marksData.length == subjectData.length) {
+      //       marks[i][j] = marksData[j]['marksobtained'];
+      //     } else if (marksData.length < subjectData.length) {
+      //       for (int k = 0; k < marksData.length; k++) {
+      //         for (chk = 0; chk < subjectData.length; chk++) {
+      //           if (marksData[k]['subject'] ==
+      //               subjectData[chk]['subjectName']) {
+      //             break;
+      //           }
+      //         }
+      //         if (chk < subjectData.length) {
+      //           marks[i][chk] = marksData[k]['marksobtained'];
+      //         }
+      //       }
+      //     } else {}
+      //   } else {
+      //     marks[i][j] = 0;
+      //   }
+      // }
+      //logic 1 ends
+      // debugPrint(marksData.toString());
+      // for (int j = 0; j < subjectData.length; j++) {
+      //   if (marksData.length == subjectData.length) {
+      //     if (marksData.isNotEmpty) {
+      //       // if (marksData[j]['marksobtained'] != null) {
+      //       //   marks[i][j] = marksData[j]['marksobtained'];
+      //       // } else {
+      //       //   marks[i][j] = 0;
+      //       // }
+      //       marks[i][j] = marksData[j]['marksobtained'];
+      //     } else {
+      //       marks[i][j] = 0;
+      //     }
+      //   } else if (marksData.length == 0) {
+      //     marks[i][j] = 0;
+      //   } else if (marksData.length < subjectData.length ||
+      //       marksData.length > subjectData.length) {
+      //     if (j < marksData.length) {
+      //       marks[i][j] = marksData[j]['marksobtained'];
+      //     } else {
+      //       marks[i][j] = 0;
+      //     }
+      //   }
+      //   debugPrint(marks.toString());
+      // }
       // debugPrint(marksData[i].toString());
     } //generate(3, (_) => [])
     final fixedLengthList = List<List<dynamic>>.generate(
@@ -131,7 +177,7 @@ class _ResultsTableState extends State<ResultsTable> {
       }
     }
     alldata = fixedLengthList;
-    debugPrint(alldata.toString());
+    // debugPrint(alldata.toString());
     setState(() {});
     setState(() {
       isLoading = false;
@@ -141,7 +187,7 @@ class _ResultsTableState extends State<ResultsTable> {
   exportCsv(String type) async {
     String csv = const ListToCsvConverter().convert(alldata);
     final bytes = utf8.encode(csv);
-    debugPrint(type);
+    // debugPrint(type);
     if (type == "Web") {
       final blob = html.Blob([bytes]);
       final url = html.Url.createObjectUrlFromBlob(blob);
@@ -158,7 +204,11 @@ class _ResultsTableState extends State<ResultsTable> {
       String filePath = "$dir/list.csv";
       File file = File(filePath);
       await file.writeAsString(csv);
-      print("File exported successfully!");
+      // debugPrint(file.path);
+      showSnackBar(
+        context: context,
+        content: "File downloaded at ${file.path}",
+      );
     }
   }
 
@@ -167,7 +217,7 @@ class _ResultsTableState extends State<ResultsTable> {
     // TODO: implement initState
     super.initState();
     if (widget.semester != "") {
-      debugPrint("working");
+      // debugPrint("working");
       setState(() {});
     }
     setState(() {
@@ -202,46 +252,63 @@ class _ResultsTableState extends State<ResultsTable> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : SingleChildScrollView(
+          : Center(
               child: SizedBox(
                   width: double.infinity,
-                  child: DataTable(
-                    columns: [
-                      DataColumn(
-                          label: Expanded(
-                        child: Text('Subject\nName',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                      )),
-                      for (int i = 0; i < subjectData.length; i++) ...[
-                        DataColumn(
-                            label: Text(subjectData[i]['subjectName'],
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold))),
-                      ]
-                    ],
-                    rows: [
-                      if (actualStudentsData.length == 0) ...[
-                        DataRow(cells: [
-                          DataCell(Text(' - ')),
-                          for (int i = 0; i < subjectData.length; i++) ...[
-                            DataCell(Text('-')),
-                          ]
-                        ]),
-                      ] else ...[
-                        for (var i = 0; i < actualStudentsData.length; i++) ...[
-                          DataRow(
-                            cells: [
-                              DataCell(Text(actualStudentsData[i]['name'])),
-                              for (int j = 0; j < subjectData.length; j++) ...[
-                                DataCell(Text(marks[i][j].toString())),
-                              ]
+                  height: 750,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Center(
+                        child: DataTable(
+                          columns: [
+                            DataColumn(
+                                label: Expanded(
+                              child: Text('Subject\nName',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold)),
+                            )),
+                            for (int i = 0; i < subjectData.length; i++) ...[
+                              DataColumn(
+                                  label: Text(subjectData[i]['subjectName'],
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold))),
+                            ]
+                          ],
+                          rows: [
+                            if (actualStudentsData.length == 0) ...[
+                              DataRow(cells: [
+                                DataCell(Text(' - ')),
+                                for (int i = 0;
+                                    i < subjectData.length;
+                                    i++) ...[
+                                  DataCell(Text('-')),
+                                ]
+                              ]),
+                            ] else ...[
+                              for (var i = 0;
+                                  i < actualStudentsData.length;
+                                  i++) ...[
+                                DataRow(
+                                  cells: [
+                                    DataCell(
+                                        Text(actualStudentsData[i]['name'])),
+                                    for (int j = 0;
+                                        j < subjectData.length;
+                                        j++) ...[
+                                      DataCell(Text(marks[i][j].toString())),
+                                    ]
+                                  ],
+                                ),
+                              ],
                             ],
-                          ),
-                        ],
-                      ],
-                    ],
+                          ],
+                        ),
+                      ),
+                    ),
                   )),
             ),
     );

@@ -255,12 +255,75 @@ class _MainScreenState extends State<MainScreen> {
               Icons.feedback_outlined,
               currentPage == DrawerSections.send_feedback ? true : false,
               userData['type']),
-          menuItem(
-              6,
-              "Logout",
-              Icons.logout_rounded,
-              currentPage == DrawerSections.settings ? true : false,
-              userData['type']),
+          InkWell(
+            onTap: () async {
+              showDialog<void>(
+                context: context,
+                barrierDismissible: false, // user must tap button!
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Logout'),
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: const <Widget>[
+                          Text('Do you really want to logout?'),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Yes'),
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut().then((value) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ResponsiveLayout(
+                                  mobileScreenLayout: LoginMobileView(),
+                                  webScreenLayout: LoginWebView(),
+                                ),
+                              ),
+                              (route) => false,
+                            );
+                          });
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('No'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Icon(
+                      Icons.logout_rounded,
+                      size: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      "Logout",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           menuItem(
               8,
               "Reset password",

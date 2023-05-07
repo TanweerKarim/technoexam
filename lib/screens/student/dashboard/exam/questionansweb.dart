@@ -16,7 +16,7 @@ class QuestionAnsWeb extends StatefulWidget {
   String totaltime;
   String userName;
   String email;
-  
+
   QuestionAnsWeb({
     super.key,
     required this.subject,
@@ -37,6 +37,7 @@ class _QuestionAnsWebState extends State<QuestionAnsWeb>
   late final DateTime endTime;
   late AnimationController controller;
   PageController _pageController = PageController(initialPage: 0);
+  int count = 0;
   String get countText {
     Duration count = controller.duration! * controller.value;
     return controller.isDismissed
@@ -135,18 +136,14 @@ class _QuestionAnsWebState extends State<QuestionAnsWeb>
       'totalmarks': totalmarks,
       'marksobtained': '0',
       'subject': widget.subject,
-    }).then((value) => Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MainScreen(),
-              ),
-              (route) => false,
-            ));
-  }
-
-  void showAlert() {
-    count++;
-    if (count == 4) {
+    }).then((value) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainScreen(),
+        ),
+        (route) => false,
+      );
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -155,12 +152,19 @@ class _QuestionAnsWebState extends State<QuestionAnsWeb>
               'You are trying to use unfair means and your exam is cancelled'),
           actions: <Widget>[
             TextButton(
-              onPressed: () => cancelExam(),
+              onPressed: () => Navigator.pop(context),
               child: const Text('OK'),
             ),
           ],
         ),
       );
+    });
+  }
+
+  void showAlert() {
+    count++;
+    if (count >= 4) {
+      cancelExam();
     } else {
       showDialog<String>(
         context: context,
@@ -237,7 +241,8 @@ class _QuestionAnsWebState extends State<QuestionAnsWeb>
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => FeedbackScreen(email: widget.email,
+          builder: (context) => FeedbackScreen(
+            email: widget.email,
             userName: widget.userName,
             screentype: "Exam",
           ),

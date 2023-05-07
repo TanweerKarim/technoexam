@@ -94,7 +94,7 @@ class _AddCourseState extends State<AddCourse> {
                     });
                   },
                   child: Text(
-                    "Create subject",
+                    "Create Course",
                   ),
                 ),
               ],

@@ -59,7 +59,10 @@ class _WebDashBoardState extends State<WebDashBoard> {
               SizedBox(
                 height: 320.0,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 60.0),
+                  padding: const EdgeInsets.only(
+                    left: 60.0,
+                    right: 60,
+                  ),
                   child: ExamsCard(
                     branch: widget.branch,
                     sem: widget.sem,
@@ -135,7 +138,10 @@ class _WebDashBoardState extends State<WebDashBoard> {
                             height: 300.0,
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
-                              child: NotesCard(),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 60.0),
+                                child: NotesCard(),
+                              ),
                             ),
                           ),
                         ],
