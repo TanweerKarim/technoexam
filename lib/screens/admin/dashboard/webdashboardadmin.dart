@@ -83,7 +83,7 @@ class _WebDashboardAdminState extends State<WebDashboardAdmin> {
                           Padding(
                             padding: const EdgeInsets.only(left: 60, top: 12),
                             child: SizedBox(
-                              height: 150,
+                              height: 300,
                               width: double.infinity,
                               child: EventsCard(userType: widget.userType),
                             ),
