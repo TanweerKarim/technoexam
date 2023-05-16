@@ -38,9 +38,10 @@ class _QuestionCardState extends State<QuestionCard> {
               height: 10,
             ),
             Text(
-              widget.question,
+              "Q${widget.index + 1}.${widget.question}",
               style: TextStyle(
                 fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
             RadioListTile(
@@ -165,6 +166,12 @@ class _QuestionCardState extends State<QuestionCard> {
                 }
               }),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            Divider(
+              thickness: 5,
+            )
           ],
         ),
       ),

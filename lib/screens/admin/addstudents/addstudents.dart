@@ -75,17 +75,6 @@ class AddStudentMobileState extends State<AddStudentMobile> {
     );
   }
 
-  // openFile(filepath) async {
-  //   File f = new File(filepath);
-  //   print("CSV to List");
-  //   final input = f.openRead();
-  //   final fields = utf8.decode((input.files.first.bytes)!.toList());;
-  //   print(fields);
-  //   setState(() {
-  //     employeeData = fields;
-  //   });
-  // }
-
   void _openFileExplorer() async {
     FilePickerResult? result;
     try {
@@ -94,14 +83,6 @@ class AddStudentMobileState extends State<AddStudentMobile> {
           withData: true,
           type: FileType.custom,
           allowedExtensions: ['csv']);
-      // _paths = (await FilePicker.platform.pickFiles(
-      //   type: _pickingType,
-      //   allowMultiple: false,
-      //   allowedExtensions: (_extension?.isNotEmpty ?? false)
-      //       ? _extension?.replaceAll(' ', '').split(',')
-      //       : null,
-      // ))
-      //     ?.files;
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
     } catch (ex) {
@@ -138,37 +119,6 @@ class AddStudentMobileState extends State<AddStudentMobile> {
                 employeeData: employeeData,
               ),
             ));
-        // final _auth = FirebaseAuth.instance;
-        // bool checkUpdated = false;
-        // for (int i = 0; i < employeeData.length; i++) {
-        //   debugPrint("1");
-        //   await _auth
-        //       .createUserWithEmailAndPassword(
-        //           email: employeeData[i][1], password: employeeData[i][2])
-        //       .then((value) async {
-        //     await FirebaseFirestore.instance
-        //         .collection("users")
-        //         .doc(value.user!.uid)
-        //         .set({
-        //       "name": employeeData[i][0],
-        //       "email": employeeData[i][1],
-        //       "branch": employeeData[i][3],
-        //       "photoUrl":
-        //           "https://firebasestorage.googleapis.com/v0/b/technoexamportal.appspot.com/o/users%2Fprofilepic%2Fsodapdf-converted.png?alt=media&token=7a22e373-d48d-4d36-89be-424584e376f6",
-        //       "semester": employeeData[i][4],
-        //       "type": employeeData[i][5],
-        //       "uid": value.user!.uid,
-        //     }).then((value) => checkUpdated = true);
-        //   });
-        // }
-        // if (checkUpdated) {
-        //   _auth
-        //       .signInWithEmailAndPassword(
-        //           email: globals.email, password: globals.password)
-        //       .then((value) => showSnackBar(
-        //           context: context,
-        //           content: "Records of ${employeeData.length} Studnets added"));
-        // }
       },
     );
 

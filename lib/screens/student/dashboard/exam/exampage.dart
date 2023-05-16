@@ -49,6 +49,7 @@ class _ExamPageState extends State<ExamPage> {
       userData = currentUserSnap.data()!;
       hasstarted = userData['hasStarted'];
       hasSubmitted = userData['isSubmitted'];
+      debugPrint(hasSubmitted.toString());
       setState(() {});
     } catch (e) {
       hasstarted = false;

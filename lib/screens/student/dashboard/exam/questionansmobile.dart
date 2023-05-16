@@ -326,7 +326,7 @@ class _QuestionAnsMobileState extends State<QuestionAnsMobile>
                 return Column(
                   children: [
                     SizedBox(
-                      height: 730,
+                      height: 700,
                       child: ListView(
                           children: snapshot.data!.docs
                               .map((DocumentSnapshot document) {

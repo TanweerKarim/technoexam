@@ -113,57 +113,8 @@ class _ResultsTableState extends State<ResultsTable> {
           }
         }
       }
-      //logic2 ends
-      //logic 1
-      // for (int j = 0; j < subjectData.length; j++) {
-      //   if (marksData.isNotEmpty) {
-      //     if (marksData.length == subjectData.length) {
-      //       marks[i][j] = marksData[j]['marksobtained'];
-      //     } else if (marksData.length < subjectData.length) {
-      //       for (int k = 0; k < marksData.length; k++) {
-      //         for (chk = 0; chk < subjectData.length; chk++) {
-      //           if (marksData[k]['subject'] ==
-      //               subjectData[chk]['subjectName']) {
-      //             break;
-      //           }
-      //         }
-      //         if (chk < subjectData.length) {
-      //           marks[i][chk] = marksData[k]['marksobtained'];
-      //         }
-      //       }
-      //     } else {}
-      //   } else {
-      //     marks[i][j] = 0;
-      //   }
-      // }
-      //logic 1 ends
-      // debugPrint(marksData.toString());
-      // for (int j = 0; j < subjectData.length; j++) {
-      //   if (marksData.length == subjectData.length) {
-      //     if (marksData.isNotEmpty) {
-      //       // if (marksData[j]['marksobtained'] != null) {
-      //       //   marks[i][j] = marksData[j]['marksobtained'];
-      //       // } else {
-      //       //   marks[i][j] = 0;
-      //       // }
-      //       marks[i][j] = marksData[j]['marksobtained'];
-      //     } else {
-      //       marks[i][j] = 0;
-      //     }
-      //   } else if (marksData.length == 0) {
-      //     marks[i][j] = 0;
-      //   } else if (marksData.length < subjectData.length ||
-      //       marksData.length > subjectData.length) {
-      //     if (j < marksData.length) {
-      //       marks[i][j] = marksData[j]['marksobtained'];
-      //     } else {
-      //       marks[i][j] = 0;
-      //     }
-      //   }
-      //   debugPrint(marks.toString());
-      // }
-      // debugPrint(marksData[i].toString());
-    } //generate(3, (_) => [])
+      
+    } 
     final fixedLengthList = List<List<dynamic>>.generate(
         actualStudentsData.length, (_) => [],
         growable: false);

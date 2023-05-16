@@ -158,7 +158,7 @@ class _ExamsCardState extends State<ExamsCard> {
                                     width: double.infinity,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        Navigator.pushAndRemoveUntil(
+                                        Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => ExamPage(
@@ -174,7 +174,6 @@ class _ExamsCardState extends State<ExamsCard> {
                                               userName: widget.userName,
                                             ),
                                           ),
-                                          (route) => true,
                                         );
                                       },
                                       style: ButtonStyle(

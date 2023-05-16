@@ -340,7 +340,7 @@ class _QuestionAnsWebState extends State<QuestionAnsWeb>
                 return Column(
                   children: [
                     SizedBox(
-                      height: 600,
+                      height: MediaQuery.of(context).size.height * 0.8,
                       child: ListView(
                           children: snapshot.data!.docs
                               .map((DocumentSnapshot document) {
